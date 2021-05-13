@@ -18,7 +18,7 @@
     <hr>
 
 
-    <table class="noset-table table table-hover table-dark recordTable">
+    <table class="table table-hover table-dark recordTable" style="max-width:500px; margin: 0 auto;">
         <tr class="recordData table-secondary text-dark">
             <th class="matter_td px-3 pb-0 align-middle" style="font-size: 15px;">登録現場　一覧</th>
         </tr>
