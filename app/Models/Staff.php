@@ -14,10 +14,4 @@ class Staff extends Model
         'id',
     ];
 
-
-    // public static $rules = [
-    //     'field_id' => 'required',
-    //     'name' => 'required',
-    // ];
-
 }

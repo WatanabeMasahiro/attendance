@@ -15,9 +15,9 @@ class Field extends Model
     ];
 
 
-    // public static $rules = [
-    //     'name' => 'required',
-    // ];
+    public static $rules = [
+        'name' => 'required|unique:fields,name',
+    ];
 
 
     public function staff_s()

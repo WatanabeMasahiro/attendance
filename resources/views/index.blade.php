@@ -4,7 +4,8 @@
 
 <div class="container mainContents text-center">    <!-- mainContents -->
 
-<h2 class="subTitle_1 pt-1 pb-2" style="letter-spacing: 0.05em;"><b>ホーム</b></h2>
+
+    <h2 class="subTitle_1 pt-1 pb-2" style="letter-spacing: 0.05em;"><b>ホーム</b></h2>
 
     <hr/>
 
@@ -54,7 +55,15 @@
                     </td>
                     <td class="align-middle" style="font-size: 15px;">{{$content->field_name}}</td>
                     <td class="align-middle" style="font-size: 15px;">{{$content->staff_name}}</td class="align-middle">
-                    <td class="align-middle" style="font-size: 15px;">{{$content->punch}}</td>
+                    <td class="align-middle" style="font-size: 18px;">
+                        @if($content->punch === 1)
+                            <div class="text-danger"><b>出勤</b></div>
+                        @elseif($content->punch === 0)
+                            <div class="text-info"><b>退勤</b></div>
+                        @else
+                            <div class="text-secondary" style="font-size: 15px;">なし</div>
+                        @endif
+                    </td>
                     <td class="align-middle" style="font-size: 15px;"><pre>{{$content->remarks}}</pre></td>
                 </tr>
         @endforeach
@@ -64,14 +73,15 @@
         <div class="paginate d-flex justify-content-center my-4">{{ $contents->links('vendor.pagination.bootstrap-4') }}</div>
     @else
             <tbody>
-                <tr class="recordData table-secondary text-dark">
-                    <td class="matter_td px-3 pb-0 align-middle  bg-white" colspan="5" style="font-size: 15px;">
-                        <div class="h2 my-5"><b>データがありません。</b></div>
+                <tr>
+                    <td class="align-middle bg-white" colspan="5" style="font-size: 15px;">
+                        <div class="h2 my-5 text-dark"><b>データがありません。</b></div>
                     </td>
                 </tr>
             </tbody>
         </table>
     @endisset
+
 
 </div>
 

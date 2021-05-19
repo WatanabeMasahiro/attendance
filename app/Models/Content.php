@@ -14,4 +14,9 @@ class Content extends Model
         'user_id', 'field_name', 'staff_name', 'punch', 'remarks',
     ];
 
+    public static $rules = [
+        'staff_name' => 'required',
+        'remarks' => 'required',
+    ];
+
 }

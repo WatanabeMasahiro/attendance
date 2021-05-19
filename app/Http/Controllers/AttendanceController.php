@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Field;
 use App\Models\Staff;
 use App\Models\Content;
+use App\Http\Requests\HelloRequest;
 use Illuminate\Http\Request;
 // use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -35,12 +36,13 @@ class AttendanceController extends Controller
         $fieldName = $user->fields->where('id', $onsite)->first()->name;
         $staffNames = Field::where('id', $onsite)->first()->staff_s;
         $punch = null;
-            return view('attendance', compact('user', 'onsite', 'fieldName', 'staffNames', 'punch', ));
+            return view('attendance', compact('user', 'onsite', 'fieldName', 'staffNames', 'punch'));
     }
 
     public function attendancePost(Request $request)
     {
-        $user = Auth::user();
+            $this->validate($request, Content::$rules);
+            $user = Auth::user();
         if ($request->has('punchIn')){
             $punch_in = array('punch' => 1);
             $request->merge($punch_in);
@@ -62,55 +64,74 @@ class AttendanceController extends Controller
 
 
     public function staff_registerGet(Request $request) {
-        $user = Auth::user();
+            $user = Auth::user();
             $pagepass1 = array('pagepass1' => $user->pagepass);
+            $old_pagepass2 = $request->old('pagepass2');
+            $registered_call = null;
+        if (isset($old_pagepass2)) {
+            $pagepass2 = array('pagepass2' => $old_pagepass2);
+            $request->merge($pagepass1)->merge($pagepass2);
+            $registered_call = "入力データを登録しました。";
+        } else {
             $request->merge($pagepass1);
+        }
+
         if ($request->pagepass1 != $request->pagepass2) {
             return redirect('/');
         } else {
             $fields = $user->fields->all();
             $staff_s = Staff::where('user_id', $user->id)->orderBy('id', 'desc')->paginate(5);
-            return view('staff_register', compact('user', 'fields', 'staff_s',));
+            $pagepass2 = $request->pagepass2;
+            return view('staff_register', compact('user', 'fields', 'staff_s', 'pagepass2', 'registered_call'));
         }
     }
 
-    public function staff_registerPost(Request $request) {
-        // $this->validate($request, Staff::$rules); //バリデートとerror文
+    public function staff_registerPost(HelloRequest $request) {
         $staff = new Staff;
         $form = $request->all();
         unset($form['_token']);
         $staff->fill($form)->save();
-        return redirect('/staff_register'); //「登録しました。」を表示する。（リダイレクト先に変数をもたす？）
+        return redirect('/staff_register')->withInput();
     }
 
 
     public function onsite_registerGet(Request $request)
     {
-        $user = Auth::user();
+            $user = Auth::user();
             $pagepass1 = array('pagepass1' => $user->pagepass);
+            $old_pagepass2 = $request->old('pagepass2');
+            $registered_call = null;
+        if (isset($old_pagepass2)) {
+            $pagepass2 = array('pagepass2' => $old_pagepass2);
+            $request->merge($pagepass1)->merge($pagepass2);
+            $registered_call = "入力データを登録しました。";
+        } else {
             $request->merge($pagepass1);
+        }
+
         if ($request->pagepass1 != $request->pagepass2) {
             return redirect('/');
         } else {
-            $fields = $user->fields->all();
-            return view('onsite_register', compact('user','fields',));
+            $fields = $user->fields()->orderBy('id', 'desc')->paginate(5);
+            $pagepass2 = $request->pagepass2;
+            return view('onsite_register', compact('user', 'fields', 'pagepass2', 'registered_call'));
         }
     }
 
     public function onsite_registerPost(Request $request)
     {
-        // $this->validate($request, Field::$rules);  //バリデートとerror文
+        $this->validate($request, Field::$rules);
         $field = new Field;
         $form = $request->all();
         unset($form['_token']);
         $field->fill($form)->save();
-        return redirect('/onsite_register'); //「登録しました。」を表示する。（リダイレクト先に変数をもたす？）
+        return redirect('/onsite_register')->withInput();
     }
 
 
     public function info_changeGet(Request $request)
     {
-        $user = Auth::user();
+            $user = Auth::user();
             $pagepass1 = array('pagepass1' => $user->pagepass);
             $request->merge($pagepass1);
         if ($request->pagepass1 != $request->pagepass2) {

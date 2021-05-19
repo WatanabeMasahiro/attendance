@@ -4,11 +4,13 @@ $(function() {
   f_navBar();
   f_ancTran();
   f_index_punchBtn();
-  f_onsite_registerBtn();
+  f_attendance_punchBtn()
   f_staff_registerBtn();
+  f_onsite_registerBtn();
   f_withdrawalBtn_confirm();
   // f_gray_th();
   f_flashingWarning();
+  f_paginate_anchor();
 
 
   // function f_test() {
@@ -58,11 +60,17 @@ $(function() {
   }
 
 
-  function f_onsite_registerBtn() {
-    $('.onsite_registerBtn').on('click', function() {
-      if( $('input[name="name"]').val() == 0 ) {
+  function f_attendance_punchBtn() {
+    $('.punchinBtn').on('click', function() {
+      if( $('[name=staff_name]').val() == 0 ) {
         event.preventDefault();
-        alert('現場名を入力してください。');
+        alert('スタッフ名を選択してください。');
+      }
+    });
+    $('.punchoutBtn').on('click', function() {
+      if( $('[name=staff_name]').val() == 0 ) {
+        event.preventDefault();
+        alert('スタッフ名を選択してください。');
       }
     });
   }
@@ -82,6 +90,17 @@ $(function() {
       }
     });
   }
+
+
+  function f_onsite_registerBtn() {
+    $('.onsite_registerBtn').on('click', function() {
+      if( $('input[name="name"]').val() == 0 ) {
+        event.preventDefault();
+        alert('現場名を入力してください。');
+      }
+    });
+  }
+
 
   function f_withdrawalBtn_confirm() {
     $('.withdrawalBtn').on('click', ()=> {
@@ -109,6 +128,26 @@ $(function() {
     setInterval(function(){
       $('.flashingWarning').fadeOut(1200).fadeIn(1800);
     },500);
+  }
+
+  function f_paginate_anchor() {
+    if(location.pathname == '/staff_register' || location.pathname == '/onsite_register') {
+      function getParam(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+      }
+      $('.page-link').on('click', function() {
+        event.preventDefault();
+        var pagepass2 = '&pagepass2=' + getParam('pagepass2');
+        var a_href = $(this).attr('href') + pagepass2;
+        window.location.href = a_href;
+      });
+    }
   }
 
 
