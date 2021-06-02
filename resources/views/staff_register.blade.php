@@ -9,7 +9,7 @@
 
     @if($errors->has('name'))
     <div class="flashingWarning">
-    <div class="text-danger h4 mt-3">※同じ現場に、</div>
+        <div class="text-danger h4 mt-3">※同じ現場に、</div>
         <div class="text-danger h4 mb-3">同じ名前のスタッフ名は登録できません。</div>
     </div>
     @else
@@ -56,8 +56,9 @@
     @isset($staff_s)
             <tbody>
         @foreach($staff_s as $staff)
-                <tr class="table-secondary text-dark">
+                <tr class="recordData_staff table-secondary text-dark">
                     <td class="pb-2 align-middle" style="font-size: 15px;">
+                    <div class="send_staffId d-none">{{$staff->id}}</div>
                         <div style="font-size: 16px">{{$staff->name}}</div>  
                         <div style="font-size: 10px">【
                         @foreach($fields as $field)

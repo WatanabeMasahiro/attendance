@@ -36,6 +36,14 @@ Route::post('/info_change', [AttendanceController::class, 'info_changePost'])->m
 Route::get('withdrawal', [AttendanceController::class, 'withdrawalGet'])->middleware('auth');
 Route::post('/withdrawal', [AttendanceController::class, 'withdrawalPost'])->middleware('auth');
 
+Route::get('content_update_delete', [AttendanceController::class, 'content_update_deleteGet'])->middleware('auth');
+Route::post('/content_update_delete', [AttendanceController::class, 'content_update_deletePost'])->middleware('auth');
+
+Route::get('staff_update_delete', [AttendanceController::class, 'staff_update_deleteGet'])->middleware('auth');
+Route::post('/staff_update_delete', [AttendanceController::class, 'staff_update_deletePost'])->middleware('auth');
+
+Route::get('onsite_update_delete', [AttendanceController::class, 'onsite_update_deleteGet'])->middleware('auth');
+Route::post('/onsite_update_delete', [AttendanceController::class, 'onsite_update_deletePost'])->middleware('auth');
 
 
 // Route::get('/', function () {

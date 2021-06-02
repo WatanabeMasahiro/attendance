@@ -2,15 +2,26 @@
 
 @include('includes.header')
 
-<div class="container mainContents text-center">    <!-- mainContents -->
+
+<div class="container text-center">
 
 
     <h2 class="subTitle_1 pt-1 pb-2" style="letter-spacing: 0.05em;"><b>ホーム</b></h2>
 
+    @if($old_punch === 1)
+        <div class="flashingWarning text-danger h4 my-3">出勤データを登録しました。</div>
+    @elseif($old_punch === 0)
+        <div class="flashingWarning text-danger h4 my-3">退勤データを登録しました。</div>
+    @endif
+
+    @isset($old_delete)
+        <div class="flashingWarning old_delete text-danger h4 my-3">データを削除しました。</div>
+    @endisset
+
     <hr/>
 
-    <form action="/attendance" method="GET">
-        <div class="">現場名を選択し、出退勤ボタンを押してください。</div>
+    <form action="/attendance" method="GET" class="border-right border-left">
+        <div class="my-2">現場名を選択し、出退勤ボタンを押してください。</div>
         <div class="my-2">
             <select name="on_site" class="p-1">
                 <option value="0" hidden>現場名</option>
@@ -30,12 +41,12 @@
     <form action="/" method="GET">
         <div class="mt-4">絞り込みたい文字を入力し、検索ボタンを押してください。</div>
         <div class="mt-2 mb-4">
-            <input name="search" value="{{$search}}" class="text-center form-control border-secondary my-1" type="search" placeholder="Search" style="width: 200px; margin: 0 auto;">
+            <input name="search" value="{{$search}}" class="text-center form-control border-secondary my-2" type="search" placeholder="Search" style="width: 200px; margin: 0 auto;">
             <input value="検索" class="strSearch btn btn-secondary px-3" type="submit">
         </div>
     </form>
 
-        <table class="table table-hover table-dark recordTable">
+        <table class="table table-hover table-dark recordTable my-5">
             <thead>
                 <tr>
                     <th style="width: 130px;">日　時<div class="d-inline-block" style="font-size: 8px">（降順）</div></th>
@@ -48,10 +59,11 @@
     @isset($contents)
             <tbody>
         @foreach($contents as $content)
-                <tr class="table-secondary text-dark">
+                <tr class="recordData_content table-secondary text-dark">
                     <td class="align-middle" style="font-size: 15px;">
-                        <div>{{$content->created_at->format('Y-m-d')}}</div>
-                        <div>{{$content->created_at->format('H:i')}}</div>
+                        <div class="send_contentId d-none">{{$content->id}}</div>
+                        <div>{{$content->updated_at->format('Y-m-d')}}</div>
+                        <div>{{$content->updated_at->format('H:i')}}</div>
                     </td>
                     <td class="align-middle" style="font-size: 15px;">{{$content->field_name}}</td>
                     <td class="align-middle" style="font-size: 15px;">{{$content->staff_name}}</td class="align-middle">

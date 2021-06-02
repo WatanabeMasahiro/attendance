@@ -3,10 +3,15 @@ $(function() {
   // f_test();
   f_navBar();
   f_ancTran();
+  f_ancTran5();
+  f_ancTran6();
+  f_ancTran7();
   f_index_punchBtn();
-  f_attendance_punchBtn()
-  f_staff_registerBtn();
+  f_attendance_punchBtn();
+  f_deleteBtn_confirm();
+  f_staff_registerUpdate_Btn();
   f_onsite_registerBtn();
+  f_staffUpdDel_fieldId();
   f_withdrawalBtn_confirm();
   // f_gray_th();
   f_flashingWarning();
@@ -41,11 +46,74 @@ $(function() {
       } else if (pagepass2_var === '') {
           alert('入力文字がありません。');
       } else {
-          var ancTran1_href = $(this).attr('href');
-          $('#passForm').attr('action', ancTran1_href);
+          var ancTran_href = $(this).attr('href');
+          $('#passForm').attr('action', ancTran_href);
           $('#pagepass2').attr('value', pagepass2_var);
           $('#passForm').submit();
       }
+    });
+  }
+
+  function f_ancTran5() {
+    $('.recordData_content').on('click', function() {
+      var pagepass2_var = prompt('パスワードを入力してください');
+      if (pagepass2_var === null) {
+        ;
+      } else if (pagepass2_var === '') {
+          alert('入力文字がありません。');
+      } else {
+          var passForm_action = "/content_update_delete";
+          $('#passForm').attr('action', passForm_action);
+          $('#pagepass2').attr('value', pagepass2_var);
+          var send_contentId = $(this).find('.send_contentId').text();
+          $('#passForm').append('<input id="content_id" name="content_id" type="hidden" value="">');
+          $('#content_id').attr('value', send_contentId);
+          $('#passForm').submit();
+      }
+    });
+  }
+
+  function f_ancTran6() {
+    $('.recordData_staff').on('click', function() {
+      function getParam(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+      }
+      var pagepass2_var = getParam('pagepass2');
+      var passForm_action = "/staff_update_delete";
+      $('#passForm').attr('action', passForm_action);
+      $('#pagepass2').attr('value', pagepass2_var);
+      var send_staffId = $(this).find('.send_staffId').text();
+      $('#passForm').append('<input id="staff_id" name="staff_id" type="hidden" value="">');
+      $('#staff_id').attr('value', send_staffId);
+      $('#passForm').submit();
+    });
+  }
+
+  function f_ancTran7() {
+    $('.recordData_field').on('click', function() {
+      function getParam(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+      }
+      var pagepass2_var = getParam('pagepass2');
+      var passForm_action = "/onsite_update_delete";
+      $('#passForm').attr('action', passForm_action);
+      $('#pagepass2').attr('value', pagepass2_var);
+      var send_onsiteId = $(this).find('.send_onsiteId').text();
+      $('#passForm').append('<input id="onsite_id" name="onsite_id" type="hidden" value="">');
+      $('#onsite_id').attr('value', send_onsiteId);
+      $('#passForm').submit();
     });
   }
 
@@ -55,6 +123,15 @@ $(function() {
       if( $('[name=on_site]').val() == 0 ) {
         event.preventDefault();
         alert('現場名を選択してください。');
+      }
+    });
+  }
+
+
+  function f_deleteBtn_confirm() {
+    $('button[name="delete"]').on('click', ()=> {
+      if (!confirm("データを削除しますか??" )) {
+        return false;
       }
     });
   }
@@ -76,8 +153,8 @@ $(function() {
   }
 
 
-  function f_staff_registerBtn() {
-    $('.staff_registerBtn').on('click', function() {
+  function f_staff_registerUpdate_Btn() {
+    $(document).on('click', '.staff_registerBtn, .staff_updateBtn', function() {
       if( $('select[name="field_id"]').val() == '現場名' && $('input[name="name"]').val() == 0 ) {
         event.preventDefault();
         alert('現場名を選択し、スタッフ名を入力してください。');
@@ -99,6 +176,12 @@ $(function() {
         alert('現場名を入力してください。');
       }
     });
+  }
+
+
+  function f_staffUpdDel_fieldId() {
+    // var field_id = $('.fieldId_num').text();
+    // $('.field_id').val(field_id).prop('selected', true);
   }
 
 
@@ -125,10 +208,20 @@ $(function() {
 
 
   function f_flashingWarning() {
-    setInterval(function(){
+    var n = 5;
+    var interval;
+    interval = setInterval(function(){
       $('.flashingWarning').fadeOut(1200).fadeIn(1800);
+      n--;
+      if (n == 0) {
+        clearInterval(interval);
+      }
     },500);
+    setTimeout(function(){
+        $('.flashingWarning').animate({opacity:0,height:0},1000);
+      }, 12000);
   }
+
 
   function f_paginate_anchor() {
     if(location.pathname == '/staff_register' || location.pathname == '/onsite_register') {

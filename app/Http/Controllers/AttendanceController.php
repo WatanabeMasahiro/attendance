@@ -19,9 +19,11 @@ class AttendanceController extends Controller
     {
         $user = Auth::user();
         $fields = $user->fields->all();
-        $contents = $user->contents()->orderBy('created_at', 'desc')->paginate(5);
-        $search = $request->search;
-        return view('index', compact('user', 'fields', 'contents', 'search',));
+        $contents = $user->contents()->orderBy('updated_at', 'desc')->paginate(5);
+        $search = $request->search;     //検索機能用。
+        $old_punch = $request->old('punch');
+        $old_delete = $request->old('delete');
+        return view('index', compact('user', 'fields', 'contents', 'search', 'old_punch', 'old_delete'));
     }
 
     // public function indexPost(Request $request) {
@@ -41,7 +43,8 @@ class AttendanceController extends Controller
 
     public function attendancePost(Request $request)
     {
-            $this->validate($request, Content::$rules);
+            // $this->validate($request, Content::$rules);
+            // バリデーション処理　(備考は1000文字まで)
             $user = Auth::user();
         if ($request->has('punchIn')){
             $punch_in = array('punch' => 1);
@@ -50,7 +53,7 @@ class AttendanceController extends Controller
             $form = $request->all();
             unset($form['_token']);
             $content->fill($form)->save();
-            return redirect('/');
+            return redirect('/')->withInput();
         } elseif ($request->has('punchOut')){
             $punch_out = array('punch' => 0);
             $request->merge($punch_out);
@@ -58,7 +61,7 @@ class AttendanceController extends Controller
             $form = $request->all();
             unset($form['_token']);
             $content->fill($form)->save();
-            return redirect('/');
+            return redirect('/')->withInput();
         }
     }
 
@@ -189,6 +192,99 @@ class AttendanceController extends Controller
             return redirect('/login');
         } else {
             return redirect('/');
+        }
+    }
+
+
+    public function content_update_deleteGet(Request $request)
+    {
+        $user = Auth::user();
+            $pagepass1 = array('pagepass1' => $user->pagepass);
+            $request->merge($pagepass1);
+        if ($request->pagepass1 != $request->pagepass2) {
+            return back();
+        } else {
+            $content_s = Content::where('id', $request->content_id)->get();
+            $old_update = $request->old('update');
+            return view('content_update_delete', compact('user', 'content_s', 'old_update'));
+        }
+
+    }
+
+    public function content_update_deletePost(Request $request)
+    {
+        if ($request->has('update')){
+            // バリデーション処理　(備考は1000文字まで)
+            $content = Content::find($request->id);
+            $form = $request->all();
+            unset($form['_token']);
+            $content->fill($form)->save();
+            return back()->withInput();
+        } elseif($request->has('delete')) {
+            Content::find($request->id)->delete();
+            return redirect('/')->withInput();
+        }
+    }
+
+
+    public function staff_update_deleteGet(Request $request)
+    {
+        $user = Auth::user();
+            $pagepass1 = array('pagepass1' => $user->pagepass);
+            $request->merge($pagepass1);
+        if ($request->pagepass1 != $request->pagepass2) {
+            return back();
+        } else {
+            $staff_s = Staff::where('id', $request->staff_id)->get();
+            $fields = $user->fields->all();
+            $old_update = $request->old('update');
+            return view('staff_update_delete', compact('user', 'staff_s', 'fields', 'old_update'));
+        }
+    }
+
+    public function staff_update_deletePost(Request $request)
+    {
+        // 同じ名前の禁止。。。
+        if ($request->has('update')){
+            // バリデーション処理
+            $staff = Staff::find($request->id);
+            $form = $request->all();
+            unset($form['_token']);
+            $staff->fill($form)->save();
+            return back()->withInput();
+        } elseif($request->has('delete')) {
+            Staff::find($request->id)->delete();
+            return redirect('/')->withInput();
+        }
+    }
+
+
+    public function onsite_update_deleteGet(Request $request)
+    {
+        $user = Auth::user();
+            $pagepass1 = array('pagepass1' => $user->pagepass);
+            $request->merge($pagepass1);
+        if ($request->pagepass1 != $request->pagepass2) {
+            return back();
+        } else {
+            $field_s = Field::where('id', $request->onsite_id)->get();
+            $old_update = $request->old('update');
+            return view('onsite_update_delete', compact('user', 'field_s', 'old_update'));
+        }
+    }
+
+    public function onsite_update_deletePost(Request $request)
+    {
+        if ($request->has('update')){
+            // バリデーション処理
+            $field = Field::find($request->id);
+            $form = $request->all();
+            unset($form['_token']);
+            $field->fill($form)->save();
+            return back()->withInput();
+        } elseif($request->has('delete')) {
+            Field::find($request->id)->delete();
+            return redirect('/')->withInput();
         }
     }
 

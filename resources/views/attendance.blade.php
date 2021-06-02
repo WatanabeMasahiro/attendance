@@ -11,13 +11,6 @@
 
     <div class="h4 my-4"><b>【　{{$fieldName}}　】</b></div>
 
-    @error('staff_name')
-        <div class="flashingWarning text-danger h4 my-3">staff_nameバリデーションエラーです</div>
-    @enderror
-    @error('remarks')
-        <div class="flashingWarning text-danger h4 my-3">remarksバリデーションエラーです</div>
-    @enderror
-
     <form action="/attendance" method="POST">
     @csrf
         <div class="text-center">
@@ -41,8 +34,8 @@
             <textarea name="remarks" rows="4" cols="40" placeholder="備考欄" class="p-2 mt-3"></textarea>
 
             <div class="text-center mt-3 mb-4">
-                <button name="punchIn" type="submit" class="punchinBtn btn btn-danger mr-3">出勤</button>
-                <button name="punchOut" type="submit" class="punchoutBtn btn btn-info ml-3">退勤</button>
+                <button name="punchIn" type="submit" class="punchinBtn btn btn-danger btn-lg mt-1 mr-4">出勤</button>
+                <button name="punchOut" type="submit" class="punchoutBtn btn btn-info btn-lg mt-1 ml-4">退勤</button>
             </div>
 
         </div>

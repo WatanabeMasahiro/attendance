@@ -22,7 +22,7 @@
             <input class="pagepass2" name="pagepass2" type="hidden" value="{{$pagepass2}}">
             <input name="user_id" type="hidden" value="{{$user->id}}">
             <input name="name" type="text" value = "{{ old('name') }}" placeholder="現場名" class="form-control border-secondary text-center" style="width: 200px; margin: 0 auto;">
-            <button name="onsite_registerBtn" type="submit" class="onsite_registerBtn btn btn-success my-3 px-3">登録</button>
+            <button name="onsite_registerBtn" type="submit" class="onsite_registerBtn btn btn-success btn-lg my-3 px-3">登録</button>
         </form>
     </div>
 
@@ -38,8 +38,8 @@
     @isset($fields)
             <tbody>
             @foreach($fields as $field)
-                <tr class="table-secondary text-dark">
-                    <td class="pb-2 align-middle" style="font-size: 15px;">{{$field->name}}</td>
+                <tr class="recordData_field table-secondary text-dark">
+                    <td class="pb-2 align-middle" style="font-size: 15px;"><div class="send_onsiteId d-none">{{$field->id}}</div>{{$field->name}}</td>
                 </tr>
             @endforeach
             </tbody>
