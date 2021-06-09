@@ -8,11 +8,13 @@
 
   <h4 class="subTitle_1 my-4" style="letter-spacing: 0.05em;"><b>出退勤データ<br/>ー更新・削除ー</b></h4>
 
-  <!-- バリデーション処理 -->
-
-  @isset($old_update)
-  <div class="flashingWarning text-danger h4 my-3">データを更新しました。</div>
-  @endisset
+  @if($errors->has('remarks'))
+      <div class="flashingWarning text-danger h4 my-3">※備考欄の文字数はおおよそ1000文字までです。</div>
+  @else
+    @isset($old_update)
+      <div class="flashingWarning text-danger h4 my-3">データを更新しました。</div>
+    @endisset
+  @endif
 
 
   <div class="row">
@@ -29,19 +31,19 @@
             <tr>
               <th class="bg-secondary">日　時</th>
               <td class="bg-info text-left">
-                <input type="datetime-local" name="updated_at" value="{{$content->updated_at->format('Y-m-d')}}T{{$content->updated_at->format('H:i')}}">
+                <input class="pl-1" type="datetime-local" name="updated_at" value="{{$content->updated_at->format('Y-m-d')}}T{{$content->updated_at->format('H:i')}}">
               </td>
             </tr>
             <tr>
               <th class="bg-secondary">現　場　名</th>
               <td class="bg-info text-left">
-                <input type="text" name="field_name" value="{{$content->field_name}}" style="width: 200px;">
+                <input class="pl-1" type="text" name="field_name" value="{{$content->field_name}}" style="width: 200px;">
               </td>
             </tr>
             <tr>
               <th class="bg-secondary">スタッフ名</th>
               <td class="bg-info text-left">
-                <input type="text" name="staff_name" value="{{$content->staff_name}}">
+                <input class="pl-1" type="text" name="staff_name" value="{{$content->staff_name}}">
               </td>
             </tr>
             <tr>

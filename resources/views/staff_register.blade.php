@@ -2,7 +2,7 @@
 
 @include('includes.header')
 
-<div class="container mainContents text-center">    <!-- mainContents -->
+<div class="container text-center">
 
 
     <h2 class="subTitle_2 pt-1 pb-2 mb-4" style="letter-spacing: 0.02em;"><b>ー スタッフ登録 ー</b></h2>
@@ -28,10 +28,21 @@
         <div class="my-3">
             <div class="my-1">現場名を選択してください。</div>
             <select name="field_id" class="p-1">
+            @if(old('field_id') == null)
                 <option hidden>現場名</option>
                 @foreach($fields as $field)
                     <option value="{{$field->id}}">{{$field->name}}</option>
                 @endforeach
+            @else
+                @foreach($fields as $field)
+                    @if($field->id == old('field_id'))
+                    <option value="{{$field->id}}" selected>{{$field->name}}</option>
+                    @continue
+                    @else
+                    <option value="{{$field->id}}">{{$field->name}}</option>
+                    @endif
+                @endforeach
+            @endif
             </select>
         </div>
 

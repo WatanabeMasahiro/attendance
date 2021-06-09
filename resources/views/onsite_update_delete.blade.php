@@ -8,13 +8,13 @@
 
   <h4 class="subTitle_3 my-3" style="letter-spacing: 0.05em;"><b>現場データ<br/>ー更新・削除ー</b></h4>
 
-
-    <!-- バリデーション処理 -->
-
-    @isset($old_update)
-      <div class="flashingWarning text-danger h4 my-3">データを更新しました。</div>
-    @endisset
-
+    @if($errors->has('name'))
+        <div class="flashingWarning text-danger h4 my-3">※同じ名前の現場名で更新はできません。</div>
+    @else
+      @isset($old_update)
+        <div class="flashingWarning text-danger h4 my-3">データを更新しました。</div>
+      @endisset
+    @endif
 
   <div class="row">
     <div class="col"></div>

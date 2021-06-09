@@ -219,7 +219,7 @@ $(function() {
     },500);
     setTimeout(function(){
         $('.flashingWarning').animate({opacity:0,height:0},1000);
-      }, 12000);
+      }, 10000);
   }
 
 

@@ -43,9 +43,7 @@ class AttendanceController extends Controller
 
     public function attendancePost(Request $request)
     {
-            // $this->validate($request, Content::$rules);
-            // バリデーション処理　(備考は1000文字まで)
-            $user = Auth::user();
+        $this->validate($request, Content::$rules);
         if ($request->has('punchIn')){
             $punch_in = array('punch' => 1);
             $request->merge($punch_in);
@@ -204,7 +202,7 @@ class AttendanceController extends Controller
         if ($request->pagepass1 != $request->pagepass2) {
             return back();
         } else {
-            $content_s = Content::where('id', $request->content_id)->get();
+            $content_s = $user->contents->where('id', $request->content_id);     //$userでセキュリティ上げる。ビューでデータはありませんの表示。
             $old_update = $request->old('update');
             return view('content_update_delete', compact('user', 'content_s', 'old_update'));
         }
@@ -214,7 +212,7 @@ class AttendanceController extends Controller
     public function content_update_deletePost(Request $request)
     {
         if ($request->has('update')){
-            // バリデーション処理　(備考は1000文字まで)
+            $this->validate($request, Content::$rules);
             $content = Content::find($request->id);
             $form = $request->all();
             unset($form['_token']);
@@ -235,18 +233,21 @@ class AttendanceController extends Controller
         if ($request->pagepass1 != $request->pagepass2) {
             return back();
         } else {
-            $staff_s = Staff::where('id', $request->staff_id)->get();
+            $staff_s = $user->staffs->where('id', $request->staff_id);
+            $staff_isEmpty = $staff_s->isEmpty();   //上記if文に
             $fields = $user->fields->all();
+            $staff_id = $request->staff_id;
             $old_update = $request->old('update');
-            return view('staff_update_delete', compact('user', 'staff_s', 'fields', 'old_update'));
+            return view('staff_update_delete', compact('user', 'staff_s', 'staff_isEmpty', 'fields', 'staff_id', 'old_update'));
         }
     }
 
     public function staff_update_deletePost(Request $request)
     {
-        // 同じ名前の禁止。。。
         if ($request->has('update')){
-            // バリデーション処理
+            $request->validate([
+                'name' => 'required|unique:staff,name,' . ',id,field_id,' . $request->input('field_id'),
+           ]);
             $staff = Staff::find($request->id);
             $form = $request->all();
             unset($form['_token']);
@@ -256,6 +257,8 @@ class AttendanceController extends Controller
             Staff::find($request->id)->delete();
             return redirect('/')->withInput();
         }
+        // スタッフに関わる「全データの削除」も兼ねる
+        // →jsで分岐＆POST変数飛ばす。そのリクエストで論理分岐
     }
 
 
@@ -276,7 +279,7 @@ class AttendanceController extends Controller
     public function onsite_update_deletePost(Request $request)
     {
         if ($request->has('update')){
-            // バリデーション処理
+            $this->validate($request, Field::$rules);
             $field = Field::find($request->id);
             $form = $request->all();
             unset($form['_token']);

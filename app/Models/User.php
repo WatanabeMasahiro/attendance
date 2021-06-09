@@ -42,6 +42,11 @@ class User extends Authenticatable
     ];
 
 
+    public function staffs()
+    {
+        return $this->hasmany('App\Models\Staff');
+    }
+
     public function fields()
     {
         return $this->hasmany('App\Models\Field');

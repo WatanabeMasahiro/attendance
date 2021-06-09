@@ -76,7 +76,7 @@
                             <div class="text-secondary" style="font-size: 15px;">なし</div>
                         @endif
                     </td>
-                    <td class="align-middle" style="font-size: 15px;"><pre>{{$content->remarks}}</pre></td>
+                    <td class="align-middle" style="font-size: 15px;"><pre class="text-left pl-2 my-0">{{mb_substr(str_replace(array("\r\n", "\r", "\n"), ' ', $content->remarks), 0, 20)}}@if(mb_strlen(str_replace(array("\r\n", "\r", "\n"), ' ', $content->remarks)) > 20)…@endif</pre></td>
                 </tr>
         @endforeach
             </tbody>
