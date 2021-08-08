@@ -19,30 +19,34 @@
   <div class="row">
     <div class="col"></div>
 
+    @if($field_isEmpty == true)
+      <div class="h4">データがありません。</div>
+    @else
+      <div class="m-1">
+        <form action="/onsite_update_delete" method="POST">
 
-    <div class="m-1">
-      <form action="/onsite_update_delete" method="post">
+          <table class="table recordTable">
+          @csrf
+            <input type="hidden" name="pagepass2" value="{{$passpage2}}">
+            @foreach($field_s as $field)
+              <input type="hidden" name="id" value="{{$field->id}}">
+              <tr>
+                <th class="bg-secondary py-4">現　場　名</th>
+                <td class="bg-success text-left">
+                  <input class="form-control mt-1 pl-2" name="name" type="text" value="{{$field->name}}"  placeholder="現場名" style="width: 200px;">
+                </td>
+              </tr>
+            @endforeach
+          </table>
 
-        <table class="table recordTable">
-        @csrf
-          @foreach($field_s as $field)
-            <input type="hidden" name="id" value="{{$field->id}}">
-            <tr>
-              <th class="bg-secondary py-4">現　場　名</th>
-              <td class="bg-success text-left">
-                <input class="form-control mt-1 pl-2" name="name" type="text" value="{{$field->name}}"  placeholder="現場名" style="width: 200px;">
-              </td>
-            </tr>
-          @endforeach
-        </table>
+          <div class="my-4">
+              <button name="update" value="true" type="submit" class="onsite_updateBtn btn btn-success btn-lg border mt-1 mr-4">更新</button>
+              <button name="delete" value="true" type="submit" class="onsite_deleteBtn btn btn-secondary btn-lg border mt-1 ml-4">削除</button>
+          </div>
 
-        <div class="my-4">
-            <button name="update" value="true" type="submit" class="onsite_updateBtn btn btn-success btn-lg border mt-1 mr-4">更新</button>
-            <button name="delete" value="true" type="submit" class="onsite_deleteBtn btn btn-secondary btn-lg border mt-1 ml-4">削除</button>
-        </div>
-
-      </form>
-    </div>
+        </form>
+      </div>
+    @endif
 
 
     <div class="col"></div>

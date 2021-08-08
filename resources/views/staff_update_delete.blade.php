@@ -22,7 +22,6 @@
   <div class="row">
     <div class="col"></div>
 
-
     @if($staff_isEmpty == true)
       <div class="h4">データがありません。</div>
     @else
@@ -31,10 +30,11 @@
 
           <table class="table recordTable">
           @csrf
+            <input type="hidden" name="pagepass2" value="{{$passpage2}}">
             @foreach($staff_s as $staff)
               <input type="hidden" name="id" value="{{$staff->id}}">
               <tr>
-                <th class="bg-secondary pt-3">現場名</th>
+                <th class="bg-secondary pt-3">現　場　名</th>
                 <td class="bg-primary text-left">
                   <select name="field_id" class="field_id p-1" style="width: 200px;">
                     @foreach($fields as $field)

@@ -7,16 +7,27 @@
 
     <h2 class="subTitle_2 pt-1 pb-2 mb-4" style="letter-spacing: 0.02em;"><b>ー スタッフ登録 ー</b></h2>
 
+
     @if($errors->has('name'))
-    <div class="flashingWarning">
-        <div class="text-danger h4 mt-3">※同じ現場に、</div>
-        <div class="text-danger h4 mb-3">同じ名前のスタッフ名は登録できません。</div>
-    </div>
+        <div class="flashingWarning">
+            <div class="text-danger h4 mt-3">※同じ現場に、</div>
+            <div class="text-danger h4 mb-3">同じ名前のスタッフ名は登録できません。</div>
+        </div>
+    @elseif(old('staff_registerBtn') == true)
+        <div class="flashingWarning">
+            <div class="text-danger h4 mt-3">入力データを登録しました。</div>
+        </div>
+    @elseif(old('delete') == true)
+        <div class="flashingWarning" id="staff_registerDelete">
+            <div class="text-danger h4 mt-3">データを削除しました。</div>
+            <div class="d-none" id="staff_registerPagepass2">{{old('pagepass2')}}</div>
+        </div>
     @else
         @isset($registered_call)
             <div class="flashingWarning text-danger h4 my-3">{{$registered_call}}</div>
         @endisset
     @endif
+
 
     <form action="/staff_register" method="POST">
     @csrf
@@ -49,7 +60,7 @@
         <div class="my-1">
             <div class="my-1">スタッフ名を入力してください。</div>
             <input class="form-control border-secondary pl-2" name="name" type="text" value="{{ old('name') }}" placeholder="スタッフ名" style="width: 200px; margin: 0 auto;">
-            <button name="staff_registerBtn" type="submit" class="staff_registerBtn strSearch btn btn-primary my-3 px-3">登録</button>
+            <button name="staff_registerBtn" value="true" type="submit" class="staff_registerBtn strSearch btn btn-primary my-3 px-3">登録</button>
         </div>
 
     </form>

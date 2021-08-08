@@ -11,10 +11,6 @@
 
     @if($errors->has('remarks'))
       <div class="flashingWarning text-danger h4 my-3">※備考欄の文字数はおおよそ1000文字までです。</div>
-    @else
-        @isset($old_update)
-            <div class="flashingWarning text-danger h4 my-3">データを更新しました。</div>
-        @endisset
     @endif
 
     <div class="h4 my-4"><b class="mark border rounded-pill px-5 py-1">{{$fieldName}}</b></div>
@@ -50,6 +46,8 @@
             <input name="punch" type="hidden" value="{{$punch}}">
 
             <textarea name="remarks" rows="4" cols="40" placeholder="備考欄" class="p-2 mt-3">{{old('remarks')}}</textarea>
+
+            <input name="edited_at" type="hidden" value="{{date('Y-m-d H:i:s')}}">
 
             <div class="text-center mt-3 mb-4">
                 <button name="punchIn" type="submit" class="punchinBtn btn btn-danger btn-lg mt-1 mr-4">出勤</button>

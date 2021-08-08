@@ -20,6 +20,15 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'pagepass',
+        'department_onsite'
+    ];
+
+    public static $rules = [
+        'name' => 'required',
+        'email' => 'required',
+        'pagepass' => 'required',
+        'department_onsite'  => 'required'
     ];
 
     /**

@@ -9,27 +9,38 @@
 
     @if($errors->has('name'))
         <div class="flashingWarning text-danger h4 my-3">※同じ名前の現場名は登録できません。</div>
+    @elseif(old('delete') == true)
+        <div class="flashingWarning" id="onsite_registerDelete">
+            <div class="text-danger h4 mt-3">データを削除しました。</div>
+            <div class="d-none" id="onsite_registerPagepass2">{{old('pagepass2')}}</div>
+        </div>
     @else
         @isset($registered_call)
             <div class="flashingWarning text-danger h4 my-3">{{$registered_call}}</div>
         @endisset
     @endif
 
-    <div class="my-1">
-        <div class="my-1">現場名を入力してください。</div>
-        <form action="/onsite_register" method="POST">
-        @csrf
-            <input class="pagepass2" name="pagepass2" type="hidden" value="{{$pagepass2}}">
-            <input name="user_id" type="hidden" value="{{$user->id}}">
+
+    <form action="/onsite_register" method="POST">
+    @csrf
+
+        <input class="pagepass2" name="pagepass2" type="hidden" value="{{$pagepass2}}">
+
+        <input name="user_id" type="hidden" value="{{$user->id}}">
+
+        <div class="my-1">
+            <div class="my-1">現場名を入力してください。</div>
             <input name="name" type="text" value = "{{ old('name') }}" placeholder="現場名" class="form-control border-secondary text-center" style="width: 200px; margin: 0 auto;">
             <button name="onsite_registerBtn" type="submit" class="onsite_registerBtn btn btn-success btn-lg my-3 px-3">登録</button>
-        </form>
-    </div>
+        </div>
+
+    </form>
+
 
     <hr>
 
-        <table class="table table-hover table-dark recordTable" style="max-width:500px; margin: 0 auto;">
 
+        <table class="table table-hover table-dark recordTable" style="max-width:500px; margin: 0 auto;">
             <thead>
                 <tr>
                     <th style="letter-spacing: 0.05em;">登録された現場　一覧</th>

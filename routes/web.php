@@ -18,6 +18,9 @@ use App\Http\Controllers\AttendanceController;
 Route::get('/', [AttendanceController::class, 'indexGet'])->middleware('auth');
 // Route::post('/', [AttendanceController::class, 'indexPost']);
 
+// Route::get('remarks_change', [AttendanceController::class, 'remarks_changeGet'])->middleware('auth');
+// Route::post('/remarks_change', [AttendanceController::class, 'remarks_changePost'])->middleware('auth');
+
 Route::get('attendance', [AttendanceController::class, 'attendanceGet'])->middleware('auth');
 Route::post('/attendance', [AttendanceController::class, 'attendancePost'])->middleware('auth');
 

@@ -10,8 +10,10 @@ class Content extends Model
     use HasFactory;
 
 
+    protected $dates = ['edited_at'];
+
     protected $fillable = [
-        'user_id', 'field_name', 'staff_name', 'punch', 'remarks',
+        'user_id', 'field_name', 'staff_name', 'punch', 'remarks', 'edited_at',
     ];
 
     public static $rules = [
@@ -19,4 +21,17 @@ class Content extends Model
         'remarks' => 'max:1200',
     ];
 
+    // const CREATED_AT = NULL;
+    // const UPDATED_AT = NULL;
+
+    /**
+     * `updated_at`の自動挿入の無効化
+     *
+     * @param mixed $value
+     * @return $this
+     */
+    // public function setUpdatedAt($value)
+    // {
+    //     return $this;
+    // }
 }

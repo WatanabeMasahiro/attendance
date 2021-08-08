@@ -10,10 +10,13 @@ $(function() {
   f_attendance_punchBtn();
   f_deleteBtn_confirm();
   f_staff_registerUpdate_Btn();
+  f_staff_registerDeleteMsg();
   f_onsite_registerBtn();
+  f_onsite_registerDeleteMsg();
   f_staffUpdDel_fieldId();
+  f_infochangeBtn();
   f_withdrawalBtn_confirm();
-  // f_gray_th();
+  f_gray_th();
   f_flashingWarning();
   f_paginate_anchor();
 
@@ -169,6 +172,27 @@ $(function() {
   }
 
 
+  function f_staff_registerDeleteMsg() {
+    // if( $('#staff_registerDelete1').get(0) ) {
+    //   $('#staff_registerDelete1').remove();
+    //   $('#staff_registerDelete2').removeClass('d-none').addClass('flashingWarning');
+    // }
+    // if( $('#staff_registerDelete').get(0) ) {
+    //   var url = new URL(window.location.href.split('?')[0]);
+    //   var pagepass = $('#staff_registerPagepass2').text();
+    //   url.searchParams.append('pagepass2', pagepass);
+    //   url.searchParams.append('del', true);
+    //   location.href = url;
+    // }
+    if( $('#staff_registerDelete').get(0) ) {
+      var url = new URL(window.location.href);
+      var pagepass = $('#staff_registerPagepass2').text();
+      url.searchParams.append('pagepass2', pagepass);
+      history.replaceState('', '', url);
+    }
+  }
+
+
   function f_onsite_registerBtn() {
     $('.onsite_registerBtn').on('click', function() {
       if( $('input[name="name"]').val() == 0 ) {
@@ -179,9 +203,48 @@ $(function() {
   }
 
 
+  function f_onsite_registerDeleteMsg() {
+    // if( $('#onsite_registerDelete').get(0) ) {
+    //   var url = new URL(window.location.href);
+    //   var pagepass = $('#onsite_registerPagepass2').text();
+    //   url.searchParams.append('pagepass2' ,pagepass);
+    //   url.searchParams.append('del', true);
+    //   location.href = url;
+    // }
+    if( $('#onsite_registerDelete').get(0) ) {
+      var url = new URL(window.location.href);
+      var pagepass = $('#onsite_registerPagepass2').text();
+      url.searchParams.append('pagepass2', pagepass);
+      history.replaceState('', '', url);
+    }
+  }
+
+
   function f_staffUpdDel_fieldId() {
     // var field_id = $('.fieldId_num').text();
     // $('.field_id').val(field_id).prop('selected', true);
+  }
+
+
+  function f_infochangeBtn() {
+    $('.infochangeBtn').on('click', function() {
+      if( $('input[name="name"]').val() == 0 ) {
+        event.preventDefault();
+        alert('名前(会社名)を入力してください。');
+      }
+      if( $('input[name="email"]').val() == 0 ) {
+        event.preventDefault();
+        alert('メールアドレスを入力してください。');
+      }
+      if( $('input[name="pagepass"]').val() == 0 ) {
+        event.preventDefault();
+        alert('ページパスワードを入力してください。');
+      }
+      if( $('input[name="department_onsite"]:checked').val() == undefined ) {
+        event.preventDefault();
+        alert('「現場 or 部署」を選択してください。');
+      }
+    });
   }
 
 
@@ -196,15 +259,12 @@ $(function() {
     });
   }
 
-  // function f_gray_th() {
-  //   if (location.pathname == "/" || location.pathname == "/details" || location.pathname == "/entry" || location.pathname == "/work_past" || location.pathname == "/payslips" || location.pathname == "/payslips_duration" || location.pathname == "/staff_info") {
-  //     $('th').css('background-color', '#999999');
-  //     $('th').not('#th_width_not').css('width', '160px');
-  //     if(!($('.recordData').children('td').length)){
-  //       $('.recordData').children('th').addClass('text-center py-2').css('font-size', '1.5em').css('letter-spacing', '0.05em').text('データがありません。');
-  //     }
-  //   }
-  // }
+  function f_gray_th() {
+    if (location.pathname == "/info_change") {
+      $('th').css('background-color', '#999999');
+      $('th').not('#th_width_not').css('width', '160px');
+    }
+  }
 
 
   function f_flashingWarning() {

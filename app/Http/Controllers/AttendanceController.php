@@ -6,9 +6,10 @@ use App\Models\User;
 use App\Models\Field;
 use App\Models\Staff;
 use App\Models\Content;
-use App\Http\Requests\HelloRequest;
+use App\Http\Requests\Staff_registerRequest;
+use App\Http\Requests\Info_changeRequest;
 use Illuminate\Http\Request;
-// use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -19,15 +20,53 @@ class AttendanceController extends Controller
     {
         $user = Auth::user();
         $fields = $user->fields->all();
-        $contents = $user->contents()->orderBy('updated_at', 'desc')->paginate(5);
-        $search = $request->search;     //検索機能用。
+
         $old_punch = $request->old('punch');
         $old_delete = $request->old('delete');
-        return view('index', compact('user', 'fields', 'contents', 'search', 'old_punch', 'old_delete'));
+
+        $day1_search = $request->day1_search;
+        $day2_search = $request->day2_search;
+        $str_search = mb_convert_kana(strtolower($request->str_search), 'a');
+
+        $contents = $user->contents();
+        if (!empty($day1_search)) {
+            $contents->whereDate('edited_at', '>=', $day1_search);
+        }
+        if (!empty($day2_search)) {
+            $contents->whereDate('edited_at', '<=', $day2_search);
+        }
+        if (!empty($str_search)) {
+            $contents->where(function($contents) use($str_search){
+                $contents->where('field_name', 'like', "%{$str_search}%")
+                    ->orwhere('staff_name', 'like', "%{$str_search}%")
+                    ->orwhere('remarks', 'like', "%{$str_search}%");
+                if ($str_search == "出勤") {
+                    $contents->orwhere('punch', '=', 1);
+                } elseif ($str_search == "退勤") {
+                    $contents->orwhere('punch', '=', 0);
+                }
+            });
+        }
+        $contents = $contents->orderBy('edited_at', 'desc')->paginate(5);
+
+        return view('index', compact('user', 'fields', 'old_punch', 'old_delete', 'day1_search', 'day2_search', 'str_search', 'contents'));
     }
 
     // public function indexPost(Request $request) {
     //     return redirect('/index');
+    // }
+
+
+    // public function remarks_changeGet(Request $request)
+    // {
+    //     $user = Auth::user();
+    //     return view('remarks_change', compact('user',));
+    // }
+
+    // public function remarks_changePost(Request $request)
+    // {
+    //     $this->validate($request, Content::$rules);
+    //     return redirect('/')->withInput();
     // }
 
 
@@ -68,6 +107,9 @@ class AttendanceController extends Controller
             $user = Auth::user();
             $pagepass1 = array('pagepass1' => $user->pagepass);
             $old_pagepass2 = $request->old('pagepass2');
+            $error_name = $request->error_name;
+            // $reg = $request->reg;
+            // $del = $request->del;
             $registered_call = null;
         if (isset($old_pagepass2)) {
             $pagepass2 = array('pagepass2' => $old_pagepass2);
@@ -78,21 +120,21 @@ class AttendanceController extends Controller
         }
 
         if ($request->pagepass1 != $request->pagepass2) {
-            return redirect('/');
+            return back()->withInput();
         } else {
             $fields = $user->fields->all();
             $staff_s = Staff::where('user_id', $user->id)->orderBy('id', 'desc')->paginate(5);
             $pagepass2 = $request->pagepass2;
-            return view('staff_register', compact('user', 'fields', 'staff_s', 'pagepass2', 'registered_call'));
+            return view('staff_register', compact('user', 'fields', 'staff_s', 'pagepass2', 'error_name', 'registered_call'));
         }
     }
 
-    public function staff_registerPost(HelloRequest $request) {
+    public function staff_registerPost(Staff_registerRequest $request) {
         $staff = new Staff;
         $form = $request->all();
         unset($form['_token']);
         $staff->fill($form)->save();
-        return redirect('/staff_register')->withInput();
+        return back()->withInput();
     }
 
 
@@ -126,7 +168,7 @@ class AttendanceController extends Controller
         $form = $request->all();
         unset($form['_token']);
         $field->fill($form)->save();
-        return redirect('/onsite_register')->withInput();
+        return back()->withInput();
     }
 
 
@@ -142,11 +184,16 @@ class AttendanceController extends Controller
         }
     }
 
-    public function info_changePost(Request $request)
+    public function info_changePost(Info_changeRequest $request)
     {
-        $user = Auth::user();
-        dd($request);   //チェック後に消す。
-        return view('info_change', compact('user',));
+        $field = User::find($request->id);
+        // dd($user_pagepassUrl);
+        $form = $request->all();
+        unset($form['_token']);
+        $field->fill($form)->save();
+        $user_pagepass = $field->pagepass;
+        $user_pagepassUrl = '/info_change?pagepass2=' . $user_pagepass;
+        return redirect($user_pagepassUrl)->withInput();
     }
 
 
@@ -202,9 +249,10 @@ class AttendanceController extends Controller
         if ($request->pagepass1 != $request->pagepass2) {
             return back();
         } else {
-            $content_s = $user->contents->where('id', $request->content_id);     //$userでセキュリティ上げる。ビューでデータはありませんの表示。
+            $content_s = $user->contents->where('id', $request->content_id);
+            $content_isEmpty = $content_s->isEmpty();
             $old_update = $request->old('update');
-            return view('content_update_delete', compact('user', 'content_s', 'old_update'));
+            return view('content_update_delete', compact('user', 'content_s', 'content_isEmpty', 'old_update'));
         }
 
     }
@@ -213,12 +261,16 @@ class AttendanceController extends Controller
     {
         if ($request->has('update')){
             $this->validate($request, Content::$rules);
-            $content = Content::find($request->id);
+            // $content = Content::find($request->id);
+            // $form = $request->all();
+            // unset($form['_token']);
+            // $content->fill($form)->save();
             $form = $request->all();
-            unset($form['_token']);
-            $content->fill($form)->save();
+            unset($form['_token'], $form['update']);
+            Content::where('id', $request->id)
+            ->update($form);
             return back()->withInput();
-        } elseif($request->has('delete')) {
+        } elseif ($request->has('delete')) {
             Content::find($request->id)->delete();
             return redirect('/')->withInput();
         }
@@ -234,11 +286,12 @@ class AttendanceController extends Controller
             return back();
         } else {
             $staff_s = $user->staffs->where('id', $request->staff_id);
-            $staff_isEmpty = $staff_s->isEmpty();   //上記if文に
+            $staff_isEmpty = $staff_s->isEmpty();
             $fields = $user->fields->all();
-            $staff_id = $request->staff_id;
+            // $staff_id = $request->staff_id;
+            $passpage2 = $request->pagepass2;
             $old_update = $request->old('update');
-            return view('staff_update_delete', compact('user', 'staff_s', 'staff_isEmpty', 'fields', 'staff_id', 'old_update'));
+            return view('staff_update_delete', compact('user', 'staff_s', 'staff_isEmpty', 'fields', 'passpage2', 'old_update'));
         }
     }
 
@@ -255,10 +308,8 @@ class AttendanceController extends Controller
             return back()->withInput();
         } elseif($request->has('delete')) {
             Staff::find($request->id)->delete();
-            return redirect('/')->withInput();
+            return redirect('/staff_register')->withInput();
         }
-        // スタッフに関わる「全データの削除」も兼ねる
-        // →jsで分岐＆POST変数飛ばす。そのリクエストで論理分岐
     }
 
 
@@ -271,8 +322,10 @@ class AttendanceController extends Controller
             return back();
         } else {
             $field_s = Field::where('id', $request->onsite_id)->get();
+            $field_isEmpty = $field_s->isEmpty();
+            $passpage2 = $request->pagepass2;
             $old_update = $request->old('update');
-            return view('onsite_update_delete', compact('user', 'field_s', 'old_update'));
+            return view('onsite_update_delete', compact('user', 'field_s', 'field_isEmpty', 'passpage2', 'old_update'));
         }
     }
 
@@ -287,7 +340,7 @@ class AttendanceController extends Controller
             return back()->withInput();
         } elseif($request->has('delete')) {
             Field::find($request->id)->delete();
-            return redirect('/')->withInput();
+            return redirect('/onsite_register')->withInput();
         }
     }
 

@@ -52,6 +52,12 @@ body {
     border-bottom: solid 2px #99CC33;
 }
 
+.subTitle_6 {
+    margin: 0 auto;
+    max-width: 450px;
+    border-radius: 30px;
+    border-bottom: solid 2px #009094;
+}
 
 .userName {
     margin-top: 15px;
