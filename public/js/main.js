@@ -6,6 +6,7 @@ $(function() {
   f_ancTran5();
   f_ancTran6();
   f_ancTran7();
+  f_nondata_tbody();
   f_index_punchBtn();
   f_attendance_punchBtn();
   f_deleteBtn_confirm();
@@ -18,7 +19,7 @@ $(function() {
   f_withdrawalBtn_confirm();
   f_gray_th();
   f_flashingWarning();
-  f_paginate_anchor();
+  // f_paginate_anchor();
 
 
   // function f_test() {
@@ -118,6 +119,13 @@ $(function() {
       $('#onsite_id').attr('value', send_onsiteId);
       $('#passForm').submit();
     });
+  }
+
+
+  function f_nondata_tbody() {
+    if($('.nondata_tbody').length == true && $('.nondata_tbody').find('tr').length == false) {
+      $('.nondata_tbody').append('<tr><td class="align-middle bg-white" colspan="5" style="font-size: 15px;"><div class="h2 my-5 text-dark"><b>データがありません。</b></div></td></tr>');
+    }
   }
 
 
@@ -283,25 +291,25 @@ $(function() {
   }
 
 
-  function f_paginate_anchor() {
-    if(location.pathname == '/staff_register' || location.pathname == '/onsite_register') {
-      function getParam(name, url) {
-        if (!url) url = window.location.href;
-        name = name.replace(/[\[\]]/g, "\\$&");
-        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-            results = regex.exec(url);
-        if (!results) return null;
-        if (!results[2]) return '';
-        return decodeURIComponent(results[2].replace(/\+/g, " "));
-      }
-      $('.page-link').on('click', function() {
-        event.preventDefault();
-        var pagepass2 = '&pagepass2=' + getParam('pagepass2');
-        var a_href = $(this).attr('href') + pagepass2;
-        window.location.href = a_href;
-      });
-    }
-  }
+  // function f_paginate_anchor() {
+  //   if(location.pathname == '/staff_register' || location.pathname == '/onsite_register') {
+  //     function getParam(name, url) {
+  //       if (!url) url = window.location.href;
+  //       name = name.replace(/[\[\]]/g, "\\$&");
+  //       var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+  //           results = regex.exec(url);
+  //       if (!results) return null;
+  //       if (!results[2]) return '';
+  //       return decodeURIComponent(results[2].replace(/\+/g, " "));
+  //     }
+  //     $('.page-link').on('click', function() {
+  //       event.preventDefault();
+  //       var pagepass2 = '&pagepass2=' + getParam('pagepass2');
+  //       var a_href = $(this).attr('href') + pagepass2;
+  //       window.location.href = a_href;
+  //     });
+  //   }
+  // }
 
 
 });

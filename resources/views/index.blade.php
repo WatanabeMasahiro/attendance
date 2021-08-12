@@ -51,7 +51,6 @@
                     </td>
                 </tr>
                 <tr class="form_strSearch border border-secondary">
-                <div class="">
                     <td class="py-2 pr-5 pl-2">
                         <input class="form-control d-inline border-success text-center my-1 ml-1" type="search" name="str_search" value="{{$str_search}}"  style="width: 200px;" placeholder="Search"></td>
                     <td class="py-2">
@@ -98,7 +97,7 @@
                 </tr>
             </thead>
     @isset($contents)
-            <tbody>
+            <tbody class="nondata_tbody">
         @foreach($contents as $content)
                 <tr class="recordData_content table-secondary text-dark">
                     <td class="align-middle" style="font-size: 15px;">

@@ -103,14 +103,16 @@ class AttendanceController extends Controller
     }
 
 
-    public function staff_registerGet(Request $request) {
+    public function staff_registerGet(Request $request){
             $user = Auth::user();
             $pagepass1 = array('pagepass1' => $user->pagepass);
             $old_pagepass2 = $request->old('pagepass2');
-            $error_name = $request->error_name;
+            // $error_name = $request->error_name;
             // $reg = $request->reg;
             // $del = $request->del;
             $registered_call = null;
+            $str_search = mb_convert_kana(strtolower($request->str_search), 'a');
+
         if (isset($old_pagepass2)) {
             $pagepass2 = array('pagepass2' => $old_pagepass2);
             $request->merge($pagepass1)->merge($pagepass2);
@@ -120,12 +122,22 @@ class AttendanceController extends Controller
         }
 
         if ($request->pagepass1 != $request->pagepass2) {
-            return back()->withInput();
+            return redirect('/');
         } else {
-            $fields = $user->fields->all();
-            $staff_s = Staff::where('user_id', $user->id)->orderBy('id', 'desc')->paginate(5);
             $pagepass2 = $request->pagepass2;
-            return view('staff_register', compact('user', 'fields', 'staff_s', 'pagepass2', 'error_name', 'registered_call'));
+            $fields = $user->fields->all();
+            $staff_s = Staff::leftJoin('fields', 'staff.field_id', '=', 'fields.id')
+                ->select('staff.id as s_id', 'fields.id as f_id', 'staff.user_id', 'staff.name as staff_name', 'fields.name as field_name')
+                ->where('staff.user_id', $user->id);
+            if (!empty($str_search)) {
+                $staff_s->where(function($staff_s) use($str_search){
+                    $staff_s->where('staff.name', 'like', "%{$str_search}%")
+                        ->orWhere('fields.name', 'like', "%{$str_search}%");
+                });
+            }
+            $staff_s = $staff_s->orderBy('staff.id', 'desc')->paginate(5);
+
+            return view('staff_register', compact('user', 'fields', 'staff_s', 'pagepass2', 'registered_call', 'str_search'));
         }
     }
 
@@ -144,6 +156,8 @@ class AttendanceController extends Controller
             $pagepass1 = array('pagepass1' => $user->pagepass);
             $old_pagepass2 = $request->old('pagepass2');
             $registered_call = null;
+            $str_search = mb_convert_kana(strtolower($request->str_search), 'a');
+
         if (isset($old_pagepass2)) {
             $pagepass2 = array('pagepass2' => $old_pagepass2);
             $request->merge($pagepass1)->merge($pagepass2);
@@ -155,9 +169,19 @@ class AttendanceController extends Controller
         if ($request->pagepass1 != $request->pagepass2) {
             return redirect('/');
         } else {
-            $fields = $user->fields()->orderBy('id', 'desc')->paginate(5);
             $pagepass2 = $request->pagepass2;
-            return view('onsite_register', compact('user', 'fields', 'pagepass2', 'registered_call'));
+            $fields = $user->fields();
+            // if (!empty($str_search)) {
+            //     $fields->where('name', 'like', "%{$str_search}%");
+            // }
+            if (!empty($str_search)) {
+                $fields->where(function($fields) use($str_search){
+                    $fields->where('name', 'like', "%{$str_search}%");
+                });
+            }
+            $fields = $fields->orderBy('id', 'desc')->paginate(5);
+
+            return view('onsite_register', compact('user', 'fields', 'pagepass2', 'registered_call', 'str_search'));
         }
     }
 

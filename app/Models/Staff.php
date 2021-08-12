@@ -14,4 +14,10 @@ class Staff extends Model
         'id',
     ];
 
+
+    public function field_s()
+    {
+        return $this->belongsTo('App\Models\Field');
+    }
+
 }

@@ -28,8 +28,9 @@
         @endisset
     @endif
 
+    <hr/>
 
-    <form action="/staff_register" method="POST">
+    <form action="/staff_register" method="POST" class="border-right border-left">
     @csrf
 
         <input class="pagepass2" name="pagepass2" type="hidden" value="{{$pagepass2}}">
@@ -65,8 +66,38 @@
 
     </form>
 
-
     <hr>
+
+    <div class="d-block d-xl-none my-5">        <!-- mobile searchBar -->
+        <table style="margin: 0 auto;">
+            <form id="formHome_1" class="my-5" action="{{url('/staff_register')}}" method="GET">
+                <input class="pagepass2" name="pagepass2" type="hidden" value="{{$pagepass2}}">
+                <tr class="form_strSearch">
+                    <td class="py-2 pr-2 pl-2">
+                        <input class="form-control d-inline border-success text-center my-1 ml-1" type="search" name="str_search" value="{{$str_search}}"  style="width: 200px;" placeholder="Search"></td>
+                    <td class="py-2">
+                        <input value="検索" id="strSearch" class="strSearch btn btn-success px-3" type="submit">
+                    </td>
+                </tr>
+            </form>
+        </table>
+    </div>                                      <!-- /mobile searchBar -->
+
+    <div class="d-none d-xl-block">     <!-- PC searchBar -->
+        <form id="formHome_2" class="form-inline my-5 justify-content-center" action="{{url('/staff_register')}}" method="GET">
+            <input class="pagepass2" name="pagepass2" type="hidden" value="{{$pagepass2}}">
+            <table class="">
+                <tr class="form_strSearch">
+                    <div class="col-auto pr-2 ml-4">
+                        <input class="form-control border-success text-center" type="search" name="str_search" value="{{$str_search}}" placeholder="Search"><br/>
+                    </div>
+                    <div class="col-auto pl-0">
+                        <input value="検索" id="strSearch" class="strSearch btn btn-success px-3" type="submit">
+                    </div>
+                </tr>
+            </table>
+        </form>
+    </div>                              <!-- /PC searchBar -->
 
 
         <table class="table table-hover table-dark recordTable" style="max-width:500px; margin: 0 auto;">
@@ -76,15 +107,15 @@
                 </tr>
             </thead>
     @isset($staff_s)
-            <tbody>
+            <tbody class="nondata_tbody">
         @foreach($staff_s as $staff)
                 <tr class="recordData_staff table-secondary text-dark">
                     <td class="pb-2 align-middle" style="font-size: 15px;">
-                    <div class="send_staffId d-none">{{$staff->id}}</div>
-                        <div style="font-size: 16px">{{$staff->name}}</div>  
+                    <div class="send_staffId d-none">{{$staff->s_id}}</div>
+                        <div style="font-size: 16px">{{$staff->staff_name}}</div>  
                         <div style="font-size: 10px">【
                         @foreach($fields as $field)
-                            @if($staff->field_id == $field->id)
+                            @if($staff->f_id == $field->id)
                                 {{$field->name}}
                             @endif
                         @endforeach
@@ -95,7 +126,8 @@
             </tbody>
         </table>
 
-        <div class="paginate d-flex justify-content-center my-4">{{ $staff_s->links('vendor.pagination.bootstrap-4') }}</div>
+        <!-- <div class="paginate d-flex justify-content-center my-4">{{ $staff_s->appends(request()->except(['pagepass1', 'pagepass2']))->links('vendor.pagination.bootstrap-4') }}</div> -->
+        <div class="paginate d-flex justify-content-center my-4">{{ $staff_s->appends(request()->except('pagepass1'))->links('vendor.pagination.bootstrap-4') }}</div>
     @else
             <tbody>
                 <tr>
