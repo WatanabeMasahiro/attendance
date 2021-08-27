@@ -26,18 +26,18 @@ class Info_changeRequest extends FormRequest
     {
         return [
             // users_DB
-            'name' => [
+            'email' => [
                 // 'required',
-                Rule::unique('users')
-                    ->where(function($query) {
-                        $query->where('email', $this->input('email'));
-                    })
-                    ->where(function($query) {
-                        $query->where('pagepass', $this->input('pagepass'));
-                    })
-                    ->where(function($query) {
-                        $query->where('department_onsite', $this->input('department_onsite'));
-                    }),
+                Rule::unique('users')->ignore($this->input('id'))
+                    // ->where(function($query) {
+                    //     $query->where('name', $this->input('name'));
+                    // })
+                    // ->where(function($query) {
+                    //     $query->where('pagepass', $this->input('pagepass'));
+                    // })
+                    // ->where(function($query) {
+                    //     $query->where('department_onsite', $this->input('department_onsite'));
+                    // }),
             ],
         ];
     }

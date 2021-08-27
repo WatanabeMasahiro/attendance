@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Field;
 use App\Models\Staff;
 use App\Models\Content;
+use App\Http\Requests\Onsite_registerRequest;
 use App\Http\Requests\Staff_registerRequest;
 use App\Http\Requests\Info_changeRequest;
 use Illuminate\Http\Request;
@@ -16,13 +17,26 @@ use Illuminate\Support\Facades\Auth;
 class AttendanceController extends Controller
 {
 
+    // public function __construct()
+    // {
+    //     $this->middleware('ParamPagepass');
+    // }
+
+
     public function indexGet(Request $request)
     {
         $user = Auth::user();
+        $department_onsite = null;
+        if($user->department_onsite == 1){
+            $department_onsite = "現場";
+        }elseif($user->department_onsite == 0){
+            $department_onsite = "部署";
+        }
         $fields = $user->fields->all();
 
         $old_punch = $request->old('punch');
         $old_delete = $request->old('delete');
+        $pass_mismatch = $request->old('mis_match');
 
         $day1_search = $request->day1_search;
         $day2_search = $request->day2_search;
@@ -49,7 +63,7 @@ class AttendanceController extends Controller
         }
         $contents = $contents->orderBy('edited_at', 'desc')->paginate(5);
 
-        return view('index', compact('user', 'fields', 'old_punch', 'old_delete', 'day1_search', 'day2_search', 'str_search', 'contents'));
+        return view('index', compact('user', 'department_onsite', 'fields', 'old_punch', 'old_delete', 'pass_mismatch', 'day1_search', 'day2_search', 'str_search', 'contents'));
     }
 
     // public function indexPost(Request $request) {
@@ -73,11 +87,23 @@ class AttendanceController extends Controller
     public function attendanceGet(Request $request)
     {
         $user = Auth::user();
-        $onsite = $request->on_site;
-        $fieldName = $user->fields->where('id', $onsite)->first()->name;
-        $staffNames = Field::where('id', $onsite)->first()->staff_s;
+        $department_onsite = null;
+        if($user->department_onsite == 1){
+            $department_onsite = "現場";
+        }elseif($user->department_onsite == 0){
+            $department_onsite = "部署";
+        }
+        $onsite = decrypt($request->on_site);
+        $fieldObj = $user->fields->where('id', $onsite)->first();
+        if(!is_null($fieldObj)) {
+            $fieldName = $fieldObj->name;
+            $staffNames = $fieldObj->staff_s;
+        } else {
+            $fieldName = false;
+            $staffNames = false;
+        }
         $punch = null;
-            return view('attendance', compact('user', 'onsite', 'fieldName', 'staffNames', 'punch'));
+            return view('attendance', compact('user', 'department_onsite', 'onsite', 'fieldName', 'staffNames', 'punch'));
     }
 
     public function attendancePost(Request $request)
@@ -105,6 +131,12 @@ class AttendanceController extends Controller
 
     public function staff_registerGet(Request $request){
             $user = Auth::user();
+            $department_onsite = null;
+        if($user->department_onsite == 1){
+            $department_onsite = "現場";
+        }elseif($user->department_onsite == 0){
+            $department_onsite = "部署";
+        }
             $pagepass1 = array('pagepass1' => $user->pagepass);
             $old_pagepass2 = $request->old('pagepass2');
             // $error_name = $request->error_name;
@@ -122,7 +154,9 @@ class AttendanceController extends Controller
         }
 
         if ($request->pagepass1 != $request->pagepass2) {
-            return redirect('/');
+            $mis_match = array('mis_match' => true);
+            $request->merge($mis_match);
+            return redirect('/')->withInput();
         } else {
             $pagepass2 = $request->pagepass2;
             $fields = $user->fields->all();
@@ -137,7 +171,7 @@ class AttendanceController extends Controller
             }
             $staff_s = $staff_s->orderBy('staff.id', 'desc')->paginate(5);
 
-            return view('staff_register', compact('user', 'fields', 'staff_s', 'pagepass2', 'registered_call', 'str_search'));
+            return view('staff_register', compact('user', 'department_onsite', 'fields', 'staff_s', 'pagepass2', 'registered_call', 'str_search'));
         }
     }
 
@@ -153,6 +187,12 @@ class AttendanceController extends Controller
     public function onsite_registerGet(Request $request)
     {
             $user = Auth::user();
+            $department_onsite = null;
+        if($user->department_onsite == 1){
+            $department_onsite = "現場";
+        }elseif($user->department_onsite == 0){
+            $department_onsite = "部署";
+        }
             $pagepass1 = array('pagepass1' => $user->pagepass);
             $old_pagepass2 = $request->old('pagepass2');
             $registered_call = null;
@@ -167,7 +207,9 @@ class AttendanceController extends Controller
         }
 
         if ($request->pagepass1 != $request->pagepass2) {
-            return redirect('/');
+            $mis_match = array('mis_match' => true);
+            $request->merge($mis_match);
+            return redirect('/')->withInput();
         } else {
             $pagepass2 = $request->pagepass2;
             $fields = $user->fields();
@@ -181,13 +223,13 @@ class AttendanceController extends Controller
             }
             $fields = $fields->orderBy('id', 'desc')->paginate(5);
 
-            return view('onsite_register', compact('user', 'fields', 'pagepass2', 'registered_call', 'str_search'));
+            return view('onsite_register', compact('user', 'department_onsite', 'fields', 'pagepass2', 'registered_call', 'str_search'));
         }
     }
 
-    public function onsite_registerPost(Request $request)
+    public function onsite_registerPost(Onsite_registerRequest $request)
     {
-        $this->validate($request, Field::$rules);
+        // $this->validate($request, Field::$rules);
         $field = new Field;
         $form = $request->all();
         unset($form['_token']);
@@ -199,12 +241,21 @@ class AttendanceController extends Controller
     public function info_changeGet(Request $request)
     {
             $user = Auth::user();
+            $department_onsite = null;
+        if($user->department_onsite == 1){
+            $department_onsite = "現場";
+        }elseif($user->department_onsite == 0){
+            $department_onsite = "部署";
+        }
             $pagepass1 = array('pagepass1' => $user->pagepass);
             $request->merge($pagepass1);
         if ($request->pagepass1 != $request->pagepass2) {
-            return redirect('/');
+            $mis_match = array('mis_match' => true);
+            $request->merge($mis_match);
+            return redirect('/')->withInput();
         } else {
-            return view('info_change', compact('user',));
+            $old_infoChange = $request->old('infoChange');
+            return view('info_change', compact('user', 'department_onsite', 'old_infoChange'));
         }
     }
 
@@ -221,31 +272,23 @@ class AttendanceController extends Controller
     }
 
 
-    // public function pagepassGet(Request $request) {
-    //     $user = Auth::user();
-    //     $onsite = $request->on_site;
-    //     return view('pagepass', compact('user', 'onsite',));
-    // }
-
-    // public function pagepassPost(Request $request) {
-    //     $user = Auth::user();
-    //     $onsite = $request->on_site;
-    //     $pagepass1 = array('pagepass1' => $user->pagepass);
-    //     $request->merge($pagepass1);
-    //     // dd($request);
-    //     return view('pagepass', compact('user', 'onsite',));
-    // }
-
-
     public function withdrawalGet(Request $request)
     {
         $user = Auth::user();
+        $department_onsite = null;
+        if($user->department_onsite == 1){
+            $department_onsite = "現場";
+        }elseif($user->department_onsite == 0){
+            $department_onsite = "部署";
+        }
             $pagepass1 = array('pagepass1' => $user->pagepass);
             $request->merge($pagepass1);
         if ($request->pagepass1 != $request->pagepass2) {
-            return redirect('/');
+            $mis_match = array('mis_match' => true);
+            $request->merge($mis_match);
+            return redirect('/')->withInput();
         } else {
-            return view('withdrawal', compact('user'));
+            return view('withdrawal', compact('user', 'department_onsite'));
         }
     }
 
@@ -268,15 +311,23 @@ class AttendanceController extends Controller
     public function content_update_deleteGet(Request $request)
     {
         $user = Auth::user();
+        $department_onsite = null;
+        if($user->department_onsite == 1){
+            $department_onsite = "現場";
+        }elseif($user->department_onsite == 0){
+            $department_onsite = "部署";
+        }
             $pagepass1 = array('pagepass1' => $user->pagepass);
             $request->merge($pagepass1);
         if ($request->pagepass1 != $request->pagepass2) {
-            return back();
+            $mis_match = array('mis_match' => true);
+            $request->merge($mis_match);
+            return redirect('/')->withInput();
         } else {
-            $content_s = $user->contents->where('id', $request->content_id);
+            $content_s = $user->contents->where('id', decrypt($request->content_id));
             $content_isEmpty = $content_s->isEmpty();
             $old_update = $request->old('update');
-            return view('content_update_delete', compact('user', 'content_s', 'content_isEmpty', 'old_update'));
+            return view('content_update_delete', compact('user', 'department_onsite', 'content_s', 'content_isEmpty', 'old_update'));
         }
 
     }
@@ -304,18 +355,26 @@ class AttendanceController extends Controller
     public function staff_update_deleteGet(Request $request)
     {
         $user = Auth::user();
+        $department_onsite = null;
+        if($user->department_onsite == 1){
+            $department_onsite = "現場";
+        }elseif($user->department_onsite == 0){
+            $department_onsite = "部署";
+        }
             $pagepass1 = array('pagepass1' => $user->pagepass);
             $request->merge($pagepass1);
         if ($request->pagepass1 != $request->pagepass2) {
-            return back();
+            $mis_match = array('mis_match' => true);
+            $request->merge($mis_match);
+            return redirect('/')->withInput();
         } else {
-            $staff_s = $user->staffs->where('id', $request->staff_id);
+            $staff_s = $user->staffs->where('id', decrypt($request->staff_id));
             $staff_isEmpty = $staff_s->isEmpty();
             $fields = $user->fields->all();
             // $staff_id = $request->staff_id;
             $passpage2 = $request->pagepass2;
             $old_update = $request->old('update');
-            return view('staff_update_delete', compact('user', 'staff_s', 'staff_isEmpty', 'fields', 'passpage2', 'old_update'));
+            return view('staff_update_delete', compact('user', 'department_onsite', 'staff_s', 'staff_isEmpty', 'fields', 'passpage2', 'old_update'));
         }
     }
 
@@ -340,23 +399,33 @@ class AttendanceController extends Controller
     public function onsite_update_deleteGet(Request $request)
     {
         $user = Auth::user();
+        $department_onsite = null;
+        if($user->department_onsite == 1){
+            $department_onsite = "現場";
+        }elseif($user->department_onsite == 0){
+            $department_onsite = "部署";
+        }
             $pagepass1 = array('pagepass1' => $user->pagepass);
             $request->merge($pagepass1);
         if ($request->pagepass1 != $request->pagepass2) {
-            return back();
+            $mis_match = array('mis_match' => true);
+            $request->merge($mis_match);
+            return redirect('/')->withInput();
         } else {
-            $field_s = Field::where('id', $request->onsite_id)->get();
+            $field_s = $user->fields()->where('id', decrypt($request->onsite_id))->get();
             $field_isEmpty = $field_s->isEmpty();
             $passpage2 = $request->pagepass2;
             $old_update = $request->old('update');
-            return view('onsite_update_delete', compact('user', 'field_s', 'field_isEmpty', 'passpage2', 'old_update'));
+            return view('onsite_update_delete', compact('user', 'department_onsite', 'field_s', 'field_isEmpty', 'passpage2', 'old_update'));
         }
     }
 
     public function onsite_update_deletePost(Request $request)
     {
         if ($request->has('update')){
-            $this->validate($request, Field::$rules);
+            $request->validate([
+                'name' => 'required|unique:fields,name,' . ',id,user_id,' . $request->input('user_id'),
+           ]);
             $field = Field::find($request->id);
             $form = $request->all();
             unset($form['_token']);
@@ -364,8 +433,26 @@ class AttendanceController extends Controller
             return back()->withInput();
         } elseif($request->has('delete')) {
             Field::find($request->id)->delete();
+            Staff::where('field_id', $request->id)->delete();
             return redirect('/onsite_register')->withInput();
         }
+    }
+
+
+    public function pagepass_sessionGet(Request $request) {
+        $user = Auth::user();
+        $department_onsite = null;
+        if($user->department_onsite == 1){
+            $department_onsite = "現場";
+        }elseif($user->department_onsite == 0){
+            $department_onsite = "部署";
+        }
+        return view('pagepass_put.pagepass', compact('user', 'department_onsite',));
+    }
+
+    public function pagepass_sessionPost(Request $request) {
+        $user = Auth::user();
+        return redirect('/');
     }
 
 

@@ -2,13 +2,14 @@
 
 @include('includes.header')
 
+
 <div class="container mainContents text-center">
 
 
-    <h2 class="subTitle_3 pt-1 pb-2 mb-4" style="letter-spacing: 0.05em;"><b>ー 現場登録 ー</b></h2>
+    <h2 class="subTitle_3 pt-1 pb-2 mb-4" style="letter-spacing: 0.05em;"><b>ー {{$department_onsite}}登録 ー</b></h2>
 
     @if($errors->has('name'))
-        <div class="flashingWarning text-danger h4 my-3">※同じ名前の現場名は登録できません。</div>
+        <div class="flashingWarning text-danger h4 my-3">※同じ名前の{{$department_onsite}}名は登録できません。</div>
     @elseif(old('delete') == true)
         <div class="flashingWarning" id="onsite_registerDelete">
             <div class="text-danger h4 mt-3">データを削除しました。</div>
@@ -30,8 +31,9 @@
         <input name="user_id" type="hidden" value="{{$user->id}}">
 
         <div class="my-1">
-            <div class="my-1">現場名を入力してください。</div>
-            <input name="name" type="text" value = "{{ old('name') }}" placeholder="現場名" class="form-control border-secondary text-center" style="width: 200px; margin: 0 auto;">
+            <div class="my-2">{{$department_onsite}}名を入力してください。</div>
+            <div class="opt_name d-none">{{$department_onsite . '名'}}</div>
+            <input name="name" type="text" value="{{ old('name') }}" placeholder="{{$department_onsite . '名'}}" class="form-control border-secondary text-center" style="width: 200px; margin: 0 auto;" required>
             <button name="onsite_registerBtn" type="submit" class="onsite_registerBtn btn btn-success btn-lg my-3 px-3">登録</button>
         </div>
 
@@ -74,14 +76,14 @@
         <table class="table table-hover table-dark recordTable" style="max-width:500px; margin: 0 auto;">
             <thead>
                 <tr>
-                    <th style="letter-spacing: 0.05em;">登録された現場　一覧</th>
+                    <th style="letter-spacing: 0.05em;">登録された{{$department_onsite}}　一覧</th>
                 </tr>
             </thead>
     @isset($fields)
             <tbody class="nondata_tbody">
             @foreach($fields as $field)
                 <tr class="recordData_field table-secondary text-dark">
-                    <td class="pb-2 align-middle" style="font-size: 15px;"><div class="send_onsiteId d-none">{{$field->id}}</div>{{$field->name}}</td>
+                    <td class="pb-2 align-middle" style="font-size: 15px;"><div class="send_onsiteId d-none">{{encrypt($field->id)}}</div>{{$field->name}}</td>
                 </tr>
             @endforeach
             </tbody>

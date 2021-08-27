@@ -80,7 +80,10 @@ return [
     |
     */
 
-    'locale' => 'en',
+    // standard lang.
+    'locale' => 'ja',
+    // error_page lang.
+    'http_status_code_locale' => 'ja',
 
     /*
     |--------------------------------------------------------------------------

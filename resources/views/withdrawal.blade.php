@@ -27,8 +27,7 @@
   </div>
 
   <a href="/" class="d-block text-center mt-4">＜＜&nbsp;ホーム画面に戻る&nbsp;＞＞</a>
-</div>    <!-- class="content" -->
+</div>
 
-<hr>
 
 @include('includes.footer')

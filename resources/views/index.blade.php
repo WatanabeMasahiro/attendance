@@ -14,6 +14,10 @@
         <div class="flashingWarning text-danger h4 my-3">退勤データを登録しました。</div>
     @endif
 
+    @isset($pass_mismatch)
+        <div class="flashingWarning text-danger h4 my-3">ページパスが一致しませんでした。</div>
+    @endisset
+
     @isset($old_delete)
         <div class="flashingWarning old_delete text-danger h4 my-3">データを削除しました。</div>
     @endisset
@@ -21,12 +25,12 @@
     <hr/>
 
     <form action="/attendance" method="GET" class="border-right border-left">
-        <div class="my-2">現場名を選択し、出退勤ボタンを押してください。</div>
+        <div class="my-2">{{$department_onsite}}名を選択し、出退勤ボタンを押してください。</div>
         <div class="my-2">
             <select name="on_site" class="p-1">
-                <option value="0" hidden>現場名</option>
+                <option class="opt_name" value="0" hidden>{{$department_onsite . "名"}}</option>
                 @foreach($fields as $field)
-                    <option value="{{$field->id}}">{{$field->name}}</option>
+                    <option value="{{encrypt($field->id)}}">{{$field->name}}</option>
                 @endforeach
             </select>
         </div>
@@ -90,7 +94,7 @@
             <thead>
                 <tr>
                     <th style="width: 130px;">日　時<div class="d-inline-block" style="font-size: 8px">（降順）</div></th>
-                    <th style="width: 300px;">現　場</th>
+                    <th style="width: 300px; letter-spacing: 1em;">{{$department_onsite}}</th>
                     <th style="font-size: 15px; width: 200px;">スタッフ</th>
                     <th style="width: 100px;">出　退</th>
                     <th>備　考</th>
@@ -101,7 +105,7 @@
         @foreach($contents as $content)
                 <tr class="recordData_content table-secondary text-dark">
                     <td class="align-middle" style="font-size: 15px;">
-                        <div class="send_contentId d-none">{{$content->id}}</div><b>
+                        <div class="send_contentId d-none">{{encrypt($content->id)}}</div><b>
                         <div class="">{{$content->edited_at->format('Y-m-d')}}</div>
                         <div class="">{{$content->edited_at->format('H:i')}}</div></b>
                     </td>

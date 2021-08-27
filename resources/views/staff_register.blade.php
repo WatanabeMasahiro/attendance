@@ -2,6 +2,7 @@
 
 @include('includes.header')
 
+
 <div class="container text-center">
 
 
@@ -10,7 +11,7 @@
 
     @if($errors->has('name'))
         <div class="flashingWarning">
-            <div class="text-danger h4 mt-3">※同じ現場に、</div>
+            <div class="text-danger h4 mt-3">※同じ{{$department_onsite}}に、</div>
             <div class="text-danger h4 mb-3">同じ名前のスタッフ名は登録できません。</div>
         </div>
     @elseif(old('staff_registerBtn') == true)
@@ -38,10 +39,10 @@
         <input name="user_id" type="hidden" value="{{$user->id}}">
 
         <div class="my-3">
-            <div class="my-1">現場名を選択してください。</div>
+            <div class="my-1">{{$department_onsite}}名を選択してください。</div>
             <select name="field_id" class="p-1">
             @if(old('field_id') == null)
-                <option hidden>現場名</option>
+                <option class="opt_name" value="0" hidden>{{$department_onsite . "名"}}</option>
                 @foreach($fields as $field)
                     <option value="{{$field->id}}">{{$field->name}}</option>
                 @endforeach
@@ -60,7 +61,7 @@
 
         <div class="my-1">
             <div class="my-1">スタッフ名を入力してください。</div>
-            <input class="form-control border-secondary pl-2" name="name" type="text" value="{{ old('name') }}" placeholder="スタッフ名" style="width: 200px; margin: 0 auto;">
+            <input name="name" type="text" value="{{ old('name') }}" placeholder="スタッフ名" class="form-control border-secondary pl-2" style="width: 200px; margin: 0 auto;" required>
             <button name="staff_registerBtn" value="true" type="submit" class="staff_registerBtn strSearch btn btn-primary my-3 px-3">登録</button>
         </div>
 
@@ -111,7 +112,7 @@
         @foreach($staff_s as $staff)
                 <tr class="recordData_staff table-secondary text-dark">
                     <td class="pb-2 align-middle" style="font-size: 15px;">
-                    <div class="send_staffId d-none">{{$staff->s_id}}</div>
+                    <div class="send_staffId d-none">{{encrypt($staff->s_id)}}</div>
                         <div style="font-size: 16px">{{$staff->staff_name}}</div>  
                         <div style="font-size: 10px">【
                         @foreach($fields as $field)

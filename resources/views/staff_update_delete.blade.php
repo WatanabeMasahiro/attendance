@@ -10,8 +10,8 @@
 
     @if($errors->has('name'))
     <div class="flashingWarning">
-        <div class="text-danger h4 mt-3">※同じ現場に、</div>
-        <div class="text-danger h4 mb-3">同じ名前のスタッフ名で更新はできません。</div>
+        <div class="text-danger h4 mt-3">※同じ{{$department_onsite}}に、</div>
+        <div class="text-danger h4 mb-3">同じ名前のスタッフ名で更新はできません。<p class="mt-2 h5">（過去データを含む）</p></div>
     </div>
     @else
       @isset($old_update)
@@ -23,7 +23,7 @@
     <div class="col"></div>
 
     @if($staff_isEmpty == true)
-      <div class="h4">データがありません。</div>
+      <div class="h4 my-2">データがありません。</div>
     @else
       <div class="m-1">
         <form action="/staff_update_delete" method="POST">
@@ -34,9 +34,9 @@
             @foreach($staff_s as $staff)
               <input type="hidden" name="id" value="{{$staff->id}}">
               <tr>
-                <th class="bg-secondary pt-3">現　場　名</th>
+                <th class="opt_name bg-secondary pt-3 pl-3 pr-0" style="letter-spacing: 1em">{{$department_onsite . "名"}}</th>
                 <td class="bg-primary text-left">
-                  <select name="field_id" class="field_id p-1" style="width: 200px;">
+                  <select name="field_id" class="field_id p-1" style="width: 200px;" required>
                     @foreach($fields as $field)
                       @if($staff->field_id == $field->id)
                         <option value="{{$field->id}}" selected>{{$field->name}}</option>
@@ -51,7 +51,7 @@
               <tr>
                 <th class="bg-secondary py-4">スタッフ名</th>
                 <td class="bg-primary text-left">
-                  <input class="form-control mt-1 pl-2" name="name" type="text" value="{{$staff->name}}" placeholder="スタッフ名" style="width: 200px;">
+                  <input class="form-control mt-1 pl-2" name="name" type="text" value="{{$staff->name}}" placeholder="スタッフ名" style="width: 200px;" required>
                 </td>
               </tr>
             @endforeach

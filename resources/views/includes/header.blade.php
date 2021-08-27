@@ -14,7 +14,7 @@
 
         <div class="d-block userName text-center">
             @if (Auth::check())
-            <p class="text-muted userInfo_M pt-2 pb-0">　<b><i class="fa fa-user h4" aria-hidden="true"></i> 『　{{$user -> name}}　』さん</b>　</p>
+            <p class="text-muted userInfo_M pt-2 pb-0">　<b><i class="fa fa-user h4" aria-hidden="true"></i> 『　{{$user -> name}}　』</b>　</p>
             @else
             <p class="text-muted userInfo_M p-2">　<a href="/register"><b>ユーザー登録</b></a>　</p>
             @endif
@@ -57,7 +57,7 @@
                 </ul>
                 <ul class="navbar-nav">
                     <li class="nav-item" style="margin:0 auto;">
-                        <a class="ancTran3 nav-link p-3 font-weight-bold" href="/onsite_register">　　現場登録　　</a>
+                        <a class="ancTran3 nav-link p-3 font-weight-bold" href="/onsite_register">　　{{$department_onsite}}登録　　</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav">
