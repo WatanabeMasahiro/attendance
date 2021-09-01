@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class Staff_registerRequest extends FormRequest
 {
@@ -29,8 +30,9 @@ class Staff_registerRequest extends FormRequest
             'name' => [
                 'required',
                 Rule::unique('staff')->ignore($this->input('id'))
-                    ->where(function($query) {
-                        $query->where('field_id', $this->input('field_id'));
+                    ->where(function($query) {$query
+                        ->where('field_id', decrypt($this->field_id))
+                        ->where('user_id', Auth::user()->id);
                 }),
             ],
             // 'name'  => 'required|unique:staff,name,' . $this->input('id'). ',id,field_id,' . $this->input('field_id'),

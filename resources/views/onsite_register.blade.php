@@ -5,72 +5,51 @@
 
 <div class="container mainContents text-center">
 
+@if(session()->get('pagepass') != $user->pagepass)
+    <div class="bg-danger border-right border-left py-3 rounded-circle">
+        <h2 class="my-5">※ページパスが不一致です。</h2>
+        <p class="my-4">（管理者用ページの表示には、パス認証が必要です。）</p>
+    </div>
+@else
+
 
     <h2 class="subTitle_3 pt-1 pb-2 mb-4" style="letter-spacing: 0.05em;"><b>ー {{$department_onsite}}登録 ー</b></h2>
 
     @if($errors->has('name'))
         <div class="flashingWarning text-danger h4 my-3">※同じ名前の{{$department_onsite}}名は登録できません。</div>
     @elseif(old('delete') == true)
-        <div class="flashingWarning" id="onsite_registerDelete">
-            <div class="text-danger h4 mt-3">データを削除しました。</div>
-            <div class="d-none" id="onsite_registerPagepass2">{{old('pagepass2')}}</div>
-        </div>
-    @else
-        @isset($registered_call)
-            <div class="flashingWarning text-danger h4 my-3">{{$registered_call}}</div>
-        @endisset
+        <div class="flashingWarning text-danger h4 mt-3">データを削除しました。</div>
+    @elseif(old('onsite_registerBtn') == true)
+        <div class="flashingWarning text-danger h4 my-3">入力データを登録しました。</div>
     @endif
 
     <hr/>
 
     <form action="/onsite_register" method="POST"  class="border-right border-left">
     @csrf
-
-        <input class="pagepass2" name="pagepass2" type="hidden" value="{{$pagepass2}}">
-
-        <input name="user_id" type="hidden" value="{{$user->id}}">
-
         <div class="my-1">
             <div class="my-2">{{$department_onsite}}名を入力してください。</div>
             <div class="opt_name d-none">{{$department_onsite . '名'}}</div>
             <input name="name" type="text" value="{{ old('name') }}" placeholder="{{$department_onsite . '名'}}" class="form-control border-secondary text-center" style="width: 200px; margin: 0 auto;" required>
-            <button name="onsite_registerBtn" type="submit" class="onsite_registerBtn btn btn-success btn-lg my-3 px-3">登録</button>
+            <button name="onsite_registerBtn" value="true" type="submit" class="onsite_registerBtn btn btn-success btn-lg my-3 px-3">登録</button>
         </div>
-
     </form>
 
     <hr>
 
-    <div class="d-block d-xl-none my-5">        <!-- mobile searchBar -->
-        <table style="margin: 0 auto;">
-            <form id="formHome_1" class="my-5" action="{{url('/onsite_register')}}" method="GET">
-                <input class="pagepass2" name="pagepass2" type="hidden" value="{{$pagepass2}}">
-                <tr class="form_strSearch">
+    <form id="formHome" class="my-5" action="{{url('/onsite_register')}}" method="GET">
+        <div class="my-5">
+            <table style="margin: 0 auto;">
+                <tr class="">
                     <td class="py-2 pr-2 pl-2">
                         <input class="form-control d-inline border-primary text-center my-1 ml-1" type="search" name="str_search" value="{{$str_search}}"  style="width: 200px;" placeholder="Search"></td>
                     <td class="py-2">
                         <input value="検索" id="strSearch" class="strSearch btn btn-primary px-3" type="submit">
                     </td>
                 </tr>
-            </form>
-        </table>
-    </div>                                      <!-- /mobile searchBar -->
-
-    <div class="d-none d-xl-block">     <!-- PC searchBar -->
-        <form id="formHome_2" class="form-inline my-5 justify-content-center" action="{{url('/onsite_register')}}" method="GET">
-            <input class="pagepass2" name="pagepass2" type="hidden" value="{{$pagepass2}}">
-            <table class="">
-                <tr class="form_strSearch">
-                    <div class="col-auto pr-2 ml-4">
-                        <input class="form-control border-primary text-center" type="search" name="str_search" value="{{$str_search}}" placeholder="Search"><br/>
-                    </div>
-                    <div class="col-auto pl-0">
-                        <input value="検索" id="strSearch" class="strSearch btn btn-primary px-3" type="submit">
-                    </div>
-                </tr>
             </table>
-        </form>
-    </div>                              <!-- /PC searchBar -->
+        </div>
+    </form>
 
 
         <table class="table table-hover table-dark recordTable" style="max-width:500px; margin: 0 auto;">
@@ -89,7 +68,7 @@
             </tbody>
         </table>
 
-        <div class="paginate d-flex justify-content-center my-4">{{ $fields->appends(request()->except('pagepass1'))->links('vendor.pagination.bootstrap-4') }}</div>
+        <div class="paginate d-flex justify-content-center my-4">{{ $fields->appends(request()->input())->links('vendor.pagination.bootstrap-4') }}</div>
 
     @else
             <tbody>
@@ -102,6 +81,8 @@
         </table>
     @endisset
 
+
+@endif
 
 </div>
 

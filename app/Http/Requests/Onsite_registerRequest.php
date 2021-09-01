@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class Onsite_registerRequest extends FormRequest
 {
@@ -30,7 +31,7 @@ class Onsite_registerRequest extends FormRequest
                 'required',
                 Rule::unique('fields')->ignore($this->input('id'))
                     ->where(function($query) {
-                        $query->where('user_id', $this->input('user_id'));
+                        $query->where('user_id', Auth::user()->id);
                 }),
             ],
         ];

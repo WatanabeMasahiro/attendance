@@ -5,6 +5,13 @@
 
 <div class="container mainContents text-center">
 
+@if(session()->get('pagepass') != $user->pagepass)
+    <div class="bg-danger border-right border-left py-3 rounded-circle">
+        <h2 class="my-5">※ページパスが不一致です。</h2>
+        <p class="my-4">（管理者用ページの表示には、パス認証が必要です。）</p>
+    </div>
+@else
+
 
     <h2 class="subTitle_4 pt-1 pb-2 mb-4" style="letter-spacing: 0.01em;"><b>ー ユーザー情報変更 ー</b></h2>
 
@@ -19,7 +26,6 @@
     <div class="my-1">
         <form action="/info_change" method="POST">
         @csrf
-            <input name="id" type="hidden" value="{{$user->id}}">
 
             <table class="noset-table table table-dark recordTable">
                 <tr class="recordData table-secondary text-dark">
@@ -89,6 +95,8 @@
         </form>
     </div>
 
+
+@endif
 
 </div>
 

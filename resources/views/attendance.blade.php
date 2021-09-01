@@ -9,7 +9,7 @@
     <h2 class="subTitle_5 pt-1 pb-2" style="letter-spacing: 0.25em;"><b>ー 出退勤 ー</b></h2>
 
     @if($errors->has('remarks'))
-      <div class="flashingWarning text-danger h4 my-3">※備考欄の文字数はおおよそ1000文字までです。</div>
+        <div class="flashingWarning text-danger h4 my-3">※データが登録できません。<p class="mt-2 h5">（備考欄の文字数を、おおよそ1000文字までにしてください。）</p></div>
     @endif
 
 
@@ -59,6 +59,8 @@
 
             </div>
         </form>
+
+        <div class="text-danger">※備考欄の文字数は、おおよそ1000文字までです。</div>
     @endif
 
 

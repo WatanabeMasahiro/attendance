@@ -5,15 +5,20 @@
 
 <div class="container text-center">
 
+@if(session()->get('pagepass') != $user->pagepass)
+    <div class="bg-danger border-right border-left py-3 rounded-circle">
+        <h2 class="my-5">※ページパスが不一致です。</h2>
+        <p class="my-4">（管理者用ページの表示には、パス認証が必要です。）</p>
+    </div>
+@else
+
 
   <h4 class="subTitle_3 my-3" style="letter-spacing: 0.05em;"><b>{{$department_onsite}}データ<br/>ー更新・削除ー</b></h4>
 
     @if($errors->has('name'))
-        <div class="flashingWarning text-danger h4 my-3">※同じ名前の{{$department_onsite}}名で更新はできません。<p class="mt-2 h5">（過去データを含む）</p></div>
-    @else
-      @isset($old_update)
+        <div class="flashingWarning text-danger h4 my-3">※データが更新できません。<p class="mt-2 h5">（登録済データと異なる{{$department_onsite}}名で更新してください。）</p></div>
+    @elseif(old('update') == true)
         <div class="flashingWarning text-danger h4 my-3">データを更新しました。</div>
-      @endisset
     @endif
 
 
@@ -29,18 +34,14 @@
             <table class="table recordTable">
             @csrf
 
-              <input type="hidden" name="pagepass2" value="{{$passpage2}}">
-
-              <input type="hidden" name="user_id" value="{{$user->id}}">
-
               @foreach($field_s as $field)
-              <input type="hidden" name="id" value="{{$field->id}}">
+              <input type="hidden" name="id" value="{{encrypt($field->id)}}">
 
                 <tr>
                   <th class="opt_name bg-secondary py-4 pl-3 pr-0" 
                   style="letter-spacing: 1em;">{{$department_onsite . '名'}}</th>
                   <td class="bg-success text-left">
-                    <input class="form-control mt-1 pl-2" name="name" type="text" value="{{$field->name}}"  placeholder="{{$department_onsite . '名'}}" style="width: 200px;" required>
+                    <input class="form-control mt-1 pl-2" name="name" type="text" value="{{$field->name}}"  placeholder="{{$department_onsite . '名'}}" style="width: 200px;" data-name="{{$field->name}}">
                   </td>
                 </tr>
               @endforeach
@@ -60,6 +61,8 @@
       <div class="text-danger">※{{$department_onsite}}データを削除すると、<br/>その{{$department_onsite}}に登録されているスタッフデータも削除されます。</div>
     @endif
 
+
+@endif
 
 </div>
 
