@@ -109,6 +109,10 @@ class AttendanceController extends Controller
     public function attendancePost(Request $request)
     {
         $this->validate($request, Content::$rules);
+            $user = Auth::user();
+            $user_id = array('user_id' => $user->id);
+            $edited_at = array('edited_at' => date('Y-m-d H:i:s'));
+            $request->merge($user_id)->merge($edited_at);
         if ($request->has('punchIn')){
             $punch_in = array('punch' => 1);
             $request->merge($punch_in);

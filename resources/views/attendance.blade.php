@@ -22,7 +22,6 @@
         @csrf
             <div class="text-center">
 
-                <input name="user_id" type="hidden" value="{{$user->id}}">
                 <input name="field_name" type="hidden" value="{{$fieldName}}">
 
                 <div class="text-center my-2">
@@ -46,15 +45,11 @@
                     </select>
                 </div>
 
-                <input name="punch" type="hidden" value="{{$punch}}">
-
                 <textarea name="remarks" rows="4" cols="40" placeholder="備考欄" class="p-2 mt-3">{{old('remarks')}}</textarea>
 
-                <input name="edited_at" type="hidden" value="{{date('Y-m-d H:i:s')}}">
-
                 <div class="text-center mt-3 mb-4">
-                    <button name="punchIn" type="submit" class="punchinBtn btn btn-danger btn-lg mt-1 mr-4">出勤</button>
-                    <button name="punchOut" type="submit" class="punchoutBtn btn btn-info btn-lg mt-1 ml-4">退勤</button>
+                    <button name="punchIn" value="true" type="submit" class="punchinBtn btn btn-danger btn-lg mt-1 mr-4">出勤</button>
+                    <button name="punchOut" value="true" type="submit" class="punchoutBtn btn btn-info btn-lg mt-1 ml-4">退勤</button>
                 </div>
 
             </div>
