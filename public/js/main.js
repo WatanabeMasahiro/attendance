@@ -12,10 +12,8 @@ $(function() {
   f_deleteBtn_confirm();
   f_content_updateBtn();
   f_staff_registerUpdate_Btn();
-  f_staff_registerDeleteMsg();
+  // f_staff_registerDeleteMsg();
   f_onsite_registerUpdate_Btn();
-  // f_onsite_registerDeleteMsg();
-  f_staffUpdDel_fieldId();
   f_infochangeBtn();
   f_withdrawalBtn_confirm();
   f_pagepassPage();
@@ -208,7 +206,7 @@ $(function() {
   }
 
 
-  function f_staff_registerDeleteMsg() {
+  // function f_staff_registerDeleteMsg() {
     // if( $('#staff_registerDelete1').get(0) ) {
     //   $('#staff_registerDelete1').remove();
     //   $('#staff_registerDelete2').removeClass('d-none').addClass('flashingWarning');
@@ -220,13 +218,13 @@ $(function() {
     //   url.searchParams.append('del', true);
     //   location.href = url;
     // }
-    if( $('#staff_registerDelete').get(0) ) {
-      var url = new URL(window.location.href);
-      var pagepass = $('#staff_registerPagepass2').text();
-      url.searchParams.append('pagepass2', pagepass);
-      history.replaceState('', '', url);
-    }
-  }
+  //   if( $('#staff_registerDelete').get(0) ) {
+  //     var url = new URL(window.location.href);
+  //     var pagepass = $('#staff_registerPagepass2').text();
+  //     url.searchParams.append('pagepass2', pagepass);
+  //     history.replaceState('', '', url);
+  //   }
+  // }
 
 
   function f_onsite_registerUpdate_Btn() {
@@ -240,22 +238,6 @@ $(function() {
         alert('データが変更されていません。');
       }
     });
-  }
-
-
-  // function f_onsite_registerDeleteMsg() {
-  //   if( $('#onsite_registerDelete').get(0) ) {
-  //     var url = new URL(window.location.href);
-  //     var pagepass = $('#onsite_registerPagepass2').text();
-  //     url.searchParams.append('pagepass2', pagepass);
-  //     history.replaceState('', '', url);
-  //   }
-  // }
-
-
-  function f_staffUpdDel_fieldId() {
-    // var field_id = $('.fieldId_num').text();
-    // $('.field_id').val(field_id).prop('selected', true);
   }
 
 

@@ -21,7 +21,7 @@
 
                 <div class="card-body">
                     @if (session('status'))
-                        <div class="alert alert-success" role="alert">
+                        <div class="alert alert-success text-center" role="alert">
                             メールを送信しました。送信メールから<br/>
                             パスワードのリセットを行って下さい。
                         </div>
