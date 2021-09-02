@@ -1,0 +1,109 @@
+body {
+    background-color: ghostwhite;
+}
+
+.siteTitle {
+    margin-left: auto;
+    margin-right: auto;
+    width: 400px;
+    border-radius: 30px;
+    border-bottom: solid 1px rgb(186, 114, 66);
+}
+
+.subTitle_1 {
+    margin: 0 auto;
+    max-width: 450px;
+    border-radius: 30px;
+    border-bottom: solid 2px rgb(91, 192, 222);
+}
+
+.subTitle_2 {
+    margin: 0 auto;
+    max-width: 450px;
+    border-radius: 30px;
+    border-bottom: solid 2px #3366CC;
+}
+
+.subTitle_3 {
+    margin: 0 auto;
+    max-width: 450px;
+    border-radius: 30px;
+    border-bottom: solid 2px #32CD32;
+}
+
+.subTitle_4 {
+    margin: 0 auto;
+    max-width: 450px;
+    border-radius: 30px;
+    border-bottom: solid 2px #C030C0;
+}
+
+.subTitle_5 {
+    margin: 0 auto;
+    max-width: 450px;
+    border-radius: 30px;
+    border-bottom: solid 2px #dc3545
+}
+
+.subTitle_6 {
+    margin: 0 auto;
+    max-width: 450px;
+    border-radius: 30px;
+    border-bottom: solid 2px #99CC33;
+}
+
+.subTitle_6 {
+    margin: 0 auto;
+    max-width: 450px;
+    border-radius: 30px;
+    border-bottom: solid 2px #009094;
+}
+
+.userName {
+    margin-top: 15px;
+}
+
+.userInfo {
+    background-color: white;
+    border-top: solid 1px rgba(170, 170, 170, 0.2);
+    border-right: solid 10px blue;
+    border-bottom: solid 2px blue;
+    border-radius: 20px;
+    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.2);
+    margin-left: -10px;
+    margin-right: -20px;
+    padding-top: 5px;
+}
+
+.userInfo_M {
+    background-color: white;
+    border-top: solid 1px rgba(170, 170, 170, 0.2);
+    border-right: solid 10px blue;
+    border-bottom: solid 2px blue;
+    border-radius: 20px;
+    box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.2);
+    margin-left: -10px;
+    margin-right: -20px;
+    padding-top: 5px;
+    width: 300px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.nav-item :hover {
+    background-color:orange;
+    border-radius: 2px;
+}
+
+
+.recordTable {
+    border: solid 2px gray;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.recordTable th, .recordTable td  {
+    border: solid 1px white;
+}
