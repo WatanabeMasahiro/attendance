@@ -54,8 +54,8 @@
             <table style="margin: 0 auto;">
                 <tr class="form_daySearch border border-secondary">
                     <td class="py-2">
-                        <input class="form-control d-inline border-primary text-center mt-1 mr-1" type="date" name="day1_search" value="{{$day1_search}}" style="width: 200px;">から<br/>
-                        <input class="form-control d-inline border-primary text-center mb-1 mr-1" type="date" name="day2_search" value="{{$day2_search}}" style="width: 200px;">まで
+                        <div><input class="form-control d-inline border-primary text-center my-2 mr-1" type="text" name="day1_search" id="day1_search" value="{{$day1_search}}" style="width: 200px;">から</div>
+                        <div><input class="form-control d-inline border-primary text-center mt-2 mb-1 mr-1" type="text" name="day2_search" id="day2_search" value="{{$day2_search}}" style="width: 200px;">まで</div>
                     </td>
                     <td class="py-2 pl-2 pr-2">
                         <input value="日付検索" id="daySearch" class="d-inline daySearch btn btn-primary px-3" type="submit">
@@ -63,8 +63,8 @@
                 </tr>
                 <tr class="form_strSearch border border-secondary">
                     <td class="py-2 pr-5 pl-2">
-                        <input class="form-control d-inline border-success text-center my-1 ml-1" type="search" name="str_search" value="{{$str_search}}"  style="width: 200px;" placeholder="Search"></td>
-                    <td class="py-2">
+                        <input class="form-control d-inline border-success text-center my-2 ml-1" type="search" name="str_search" value="{{$str_search}}"  style="width: 200px;" placeholder="Search"></td>
+                    <td class="py-2 pb-2">
                         <input value="文字検索" id="strSearch" class="strSearch btn btn-success px-3" type="submit">
                     </td>
                 </tr>

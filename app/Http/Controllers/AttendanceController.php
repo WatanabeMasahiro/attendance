@@ -38,17 +38,21 @@ class AttendanceController extends Controller
         $old_punch = $request->old('punch');
         $pass_mismatch = $request->old('mis_match');
 
-        $day1_search = $request->day1_search;
-        $day2_search = $request->day2_search;
+        $day1_search = str_replace('/', '-', $request->day1_search);
+        $day2_search = str_replace('/', '-', $request->day2_search);
         $str_search = mb_convert_kana(strtolower($request->str_search), 'a');
 
         $contents = $user->contents();
         if (!empty($day1_search)) {
             $contents->whereDate('edited_at', '>=', $day1_search);
         }
+        $day1_search = $request->day1_search;
+
         if (!empty($day2_search)) {
             $contents->whereDate('edited_at', '<=', $day2_search);
         }
+        $day2_search = $request->day2_search;
+
         if (!empty($str_search)) {
             $contents->where(function($contents) use($str_search){
                 $contents->where('field_name', 'like', "%{$str_search}%")

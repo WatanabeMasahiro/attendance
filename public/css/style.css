@@ -96,6 +96,13 @@ body {
 }
 
 
+.form_daySearch {border-bottom-style: dashed !important;}
+.form_strSearch {border-top-style: dashed !important;}
+
+.picker__select--year {padding: 0px 10px;}
+.picker__select--month {padding: 0px 10px;}
+
+
 .recordTable {
     border: solid 2px gray;
     border-collapse: separate;
@@ -106,4 +113,10 @@ body {
 
 .recordTable th, .recordTable td  {
     border: solid 1px white;
+}
+
+
+.datepicker{
+    border: 2px solid #ccc;
+    font-size: 20px;
 }
