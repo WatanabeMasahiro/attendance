@@ -5,7 +5,7 @@
 
 <div class="content container-fluid">
 
-@if(session()->get('pagepass') != $user->pagepass)
+@if(session()->get('pagepass') != decrypt($user->pagepass))
     <div class="bg-danger border-right border-left py-3 rounded-circle text-center">
         <h2 class="my-5">※ページパスが不一致です。</h2>
         <p class="my-4">（管理者用ページの表示には、パス認証が必要です。）</p>

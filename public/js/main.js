@@ -8,6 +8,7 @@ $(function() {
   f_onsiteRegister_list();
   f_nondata_tbody();
   f_index_punchBtn();
+  f_index_pickeadate();
   f_attendance_punchBtn();
   f_deleteBtn_confirm();
   f_content_updateBtn();
@@ -117,6 +118,35 @@ $(function() {
       }
     });
   }
+
+
+  function f_index_pickeadate() {
+    $("#day1_search").pickadate({
+      format: 'yyyy/mm/dd',
+      weekdaysShort: ['土', '日', '月', '火', '水', '木', '金'],
+      showMonthsShort: true,
+      labelMonthNext: 'Go to the next month',
+      labelMonthPrev: 'Go to the previous month',
+      labelMonthSelect: 'Pick a month from the dropdown',
+      labelYearSelect: 'Pick a year from the dropdown',
+      selectMonths: true,
+      selectYears: true,
+    });
+    $("#day2_search").pickadate({
+      format: 'yyyy/mm/dd',
+      weekdaysShort: ['土', '日', '月', '火', '水', '木', '金'],
+      showMonthsShort: true,
+      labelMonthNext: 'Go to the next month',
+      labelMonthPrev: 'Go to the previous month',
+      labelMonthSelect: 'Pick a month from the dropdown',
+      labelYearSelect: 'Pick a year from the dropdown',
+      selectMonths: true,
+      selectYears: true,
+    });
+
+      $('.picker__weekday[title="月曜日"]').css('color', 'red');
+      $('.picker__weekday[title="日曜日"]').css('color', 'blue');
+    }
 
 
   function f_attendance_punchBtn() {

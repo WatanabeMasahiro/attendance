@@ -5,7 +5,7 @@
 
 <div class="container mainContents text-center">
 
-@if(session()->get('pagepass') != $user->pagepass)
+@if(session()->get('pagepass') != decrypt($user->pagepass))
     <div class="bg-danger border-right border-left py-3 rounded-circle">
         <h2 class="my-5">※ページパスが不一致です。</h2>
         <p class="my-4">（管理者用ページの表示には、パス認証が必要です。）</p>
@@ -52,9 +52,9 @@
                     <th class="px-3 align-middle text-left">ページパスワード</th>
                     <td class="px-3 align-middle" colspan="2">
                     @if(old('pagepass') === null)
-                        <input name="pagepass" class="form-control border-secondary" type="password" value="{{$user->pagepass}}" style="width: 250px; margin: 0 auto;" required data-pagepass="{{$user->pagepass}}">
+                        <input name="pagepass" class="form-control border-secondary" type="password" value="{{decrypt($user->pagepass)}}" style="width: 250px; margin: 0 auto;" required data-pagepass="{{decrypt($user->pagepass)}}">
                     @else
-                        <input name="pagepass" class="form-control border-secondary" type="password" value="{{old('pagepass')}}" style="width: 250px; margin: 0 auto;" required data-pagepass="{{$user->pagepass}}">
+                        <input name="pagepass" class="form-control border-secondary" type="password" value="{{decrypt(old('pagepass'))}}" style="width: 250px; margin: 0 auto;" required data-pagepass="{{decrypt($user->pagepass)}}">
                     @endif
                     </td>
                 </tr>

@@ -5,7 +5,7 @@
 
 <div class="container text-center">
 
-@if(session()->get('pagepass') != $user->pagepass)
+@if(session()->get('pagepass') != decrypt($user->pagepass))
     <div class="bg-danger border-right border-left py-3 rounded-circle">
         <h2 class="my-5">※ページパスが不一致です。</h2>
         <p class="my-4">（管理者用ページの表示には、パス認証が必要です。）</p>
@@ -53,7 +53,7 @@
 
     <form id="formHome" class="my-5" action="{{url('/staff_register')}}" method="GET">
         <table style="margin: 0 auto;">
-            <tr class="form_strSearch">
+            <tr class="form_strSearch_sr">
                 <td class="py-2 pr-2 pl-2">
                     <input class="form-control d-inline border-success text-center my-1 ml-1" type="search" name="str_search" value="{{$str_search}}"  style="width: 200px;" placeholder="Search"></td>
                 <td class="py-2">

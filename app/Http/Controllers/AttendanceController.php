@@ -38,17 +38,21 @@ class AttendanceController extends Controller
         $old_punch = $request->old('punch');
         $pass_mismatch = $request->old('mis_match');
 
-        $day1_search = $request->day1_search;
-        $day2_search = $request->day2_search;
+        $day1_search = str_replace('/', '-', $request->day1_search);
+        $day2_search = str_replace('/', '-', $request->day2_search);
         $str_search = mb_convert_kana(strtolower($request->str_search), 'a');
 
         $contents = $user->contents();
         if (!empty($day1_search)) {
             $contents->whereDate('edited_at', '>=', $day1_search);
         }
+        $day1_search = $request->day1_search;
+
         if (!empty($day2_search)) {
             $contents->whereDate('edited_at', '<=', $day2_search);
         }
+        $day2_search = $request->day2_search;
+
         if (!empty($str_search)) {
             $contents->where(function($contents) use($str_search){
                 $contents->where('field_name', 'like', "%{$str_search}%")
@@ -238,11 +242,13 @@ class AttendanceController extends Controller
             'email' => [Rule::unique('users')->ignore($user->id)],
           ]);
         $field = User::find($user->id);
+        $pagepass = array('pagepass' => encrypt($request->pagepass));
+        $request->merge($pagepass);
         $form = $request->all();
         unset($form['_token']);
         $field->fill($form)->save();
         session()->forget('pagepass');
-        session()->put('pagepass', $field->pagepass);
+        session()->put('pagepass', decrypt($field->pagepass));
         return back()->withInput();
     }
 
@@ -294,18 +300,10 @@ class AttendanceController extends Controller
         }elseif($user->department_onsite == 0){
             $department_onsite = "部署";
         }
-        //     $pagepass1 = array('pagepass1' => $user->pagepass);
-        //     $request->merge($pagepass1);
-        // if ($request->pagepass1 != $request->pagepass2) {
-        //     $mis_match = array('mis_match' => true);
-        //     $request->merge($mis_match);
-        //     return redirect('/')->withInput();
-        // } else {
             $content_s = $user->contents->where('id', decrypt($request->content_id));
             $content_isEmpty = $content_s->isEmpty();
             // $old_update = $request->old('update');
             return view('content_update_delete', compact('user', 'department_onsite', 'content_s', 'content_isEmpty'));
-        // }
 
     }
 
@@ -439,11 +437,11 @@ class AttendanceController extends Controller
                 'pagepass' => 'required',
             ]);
             session()->put('pagepass', $request->pagepass);
-            if(Auth::user()->pagepass != session()->get('pagepass')){
+            if(decrypt(Auth::user()->pagepass) != session()->get('pagepass')){
                 session()->forget('pagepass');
                 $mis_pagepass = array('mis_pagepass' => true);
                 $request->merge($mis_pagepass);
-            }elseif(Auth::user()->pagepass == session()->get('pagepass')){
+            }elseif(decrypt(Auth::user()->pagepass) == session()->get('pagepass')){
                 $success_pagepass = array('success_pagepass' => true);
                 $request->merge($success_pagepass);
             }
