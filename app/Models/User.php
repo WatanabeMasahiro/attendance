@@ -6,10 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-<<<<<<< HEAD
-=======
 use App\Notifications\JaPasswordReset;
->>>>>>> test1
 
 class User extends Authenticatable
 {
@@ -24,8 +21,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-<<<<<<< HEAD
-=======
         'pagepass',
         'department_onsite'
     ];
@@ -35,7 +30,6 @@ class User extends Authenticatable
         'email' => 'required|unique:users,email',
         // 'pagepass' => 'required',
         // 'department_onsite'  => 'required'
->>>>>>> test1
     ];
 
     /**
@@ -56,8 +50,6 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-<<<<<<< HEAD
-=======
 
 
     public function staffs()
@@ -87,6 +79,4 @@ class User extends Authenticatable
         $this->notify(new JaPasswordReset($token));
     }
 
-
->>>>>>> test1
 }

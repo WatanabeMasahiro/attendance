@@ -26,11 +26,8 @@ class LoginController extends Controller
      *
      * @var string
      */
-<<<<<<< HEAD
-    protected $redirectTo = RouteServiceProvider::HOME;
-=======
+
     protected $redirectTo = '/';
->>>>>>> test1
 
     /**
      * Create a new controller instance.
@@ -41,8 +38,6 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
-<<<<<<< HEAD
-=======
 
     /**
      * ログアウトしたときの画面遷移先
@@ -51,5 +46,5 @@ class LoginController extends Controller
     {
         return redirect('/login');
     }
->>>>>>> test1
+
 }

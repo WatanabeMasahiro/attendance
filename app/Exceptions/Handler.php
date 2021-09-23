@@ -2,10 +2,7 @@
 
 namespace App\Exceptions;
 
-<<<<<<< HEAD
-=======
 use Illuminate\Session\TokenMismatchException;
->>>>>>> test1
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 

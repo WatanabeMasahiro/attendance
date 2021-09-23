@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Content extends Model
 {
     use HasFactory;
-<<<<<<< HEAD
-=======
 
 
     protected $dates = ['edited_at'];
@@ -36,5 +34,4 @@ class Content extends Model
     // {
     //     return $this;
     // }
->>>>>>> test1
 }

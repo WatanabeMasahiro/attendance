@@ -1,13 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<<<<<<< HEAD
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
-=======
 
 <div id="siteTitle" class="siteTitle text-center">
     <h1 class="siteTitle mt-5 pb-1">
@@ -25,7 +18,6 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header text-center text-danger h5">{{ __('新しいパスワードを入力') }}</div>
->>>>>>> test1
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('password.update') }}">
@@ -34,11 +26,7 @@
                         <input type="hidden" name="token" value="{{ $token }}">
 
                         <div class="form-group row">
-<<<<<<< HEAD
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-=======
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('メールアドレス') }}</label>
->>>>>>> test1
 
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
@@ -52,11 +40,7 @@
                         </div>
 
                         <div class="form-group row">
-<<<<<<< HEAD
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-=======
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('パスワード') }}</label>
->>>>>>> test1
 
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
@@ -70,26 +54,13 @@
                         </div>
 
                         <div class="form-group row">
-<<<<<<< HEAD
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
-=======
                             <label for="password-confirm" class="col-md-4 col-form-label text-md-right" style="font-size: 0.94em;">{{ __('パスワード(確認)') }}</label>
->>>>>>> test1
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                             </div>
                         </div>
 
-<<<<<<< HEAD
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Reset Password') }}
-                                </button>
-                            </div>
-                        </div>
-=======
                         <div class="form-group row d-md-none text-center mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
@@ -106,17 +77,12 @@
                             </div>
                         </div>
 
->>>>>>> test1
                     </form>
                 </div>
             </div>
         </div>
     </div>
-<<<<<<< HEAD
-</div>
-=======
     <a href="/login" class="d-block text-center mt-4">＜＜&nbsp;ログイン画面に戻る&nbsp;＞＞</a>
 </div>
 
->>>>>>> test1
 @endsection

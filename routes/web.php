@@ -15,28 +15,6 @@ use App\Http\Controllers\AttendanceController;
 */
 
 
-<<<<<<< HEAD
-Route::get('/', [AttendanceController::class, 'indexGet']);
-Route::post('/', [AttendanceController::class, 'indexPost']);
-
-Route::get('attendance', [AttendanceController::class, 'attendanceGet']);
-Route::post('/attendance', [AttendanceController::class, 'attendancePost']);
-
-Route::get('pass_page', [AttendanceController::class, 'pass_pageGet']);
-Route::post('/pass_page', [AttendanceController::class, 'pass_pagePost']);
-
-Route::get('staff_register', [AttendanceController::class, 'staff_registerGet']);
-Route::post('/staff_register', [AttendanceController::class, 'staff_registerPost']);
-
-Route::get('onsite_register', [AttendanceController::class, 'onsite_registerGet']);
-Route::post('/onsite_register', [AttendanceController::class, 'onsite_registerPost']);
-
-Route::get('pagepass_change', [AttendanceController::class, 'pagepass_changeGet']);
-Route::post('/pagepass_change', [AttendanceController::class, 'pagepass_changePost']);
-
-
-// Auth::routes();
-=======
 Route::get('/', [AttendanceController::class, 'indexGet'])->middleware('auth');
 // Route::post('/', [AttendanceController::class, 'indexPost']);
 
@@ -72,26 +50,15 @@ Route::post('/pagepass', [AttendanceController::class, 'pagepass_sessionPost'])-
 
 
 Auth::routes();
->>>>>>> test1
 
 
 // Route::get('/', function () {
 //     return view('welcome');
 // });
 
-<<<<<<< HEAD
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-=======
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
 // Route::get('error/{code}', function ($code) {
 //     abort($code);
 //   });
->>>>>>> test1

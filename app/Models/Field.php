@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Field extends Model
 {
     use HasFactory;
-<<<<<<< HEAD
-=======
 
 
     protected $guarded = [
@@ -27,5 +25,4 @@ class Field extends Model
         return $this->hasMany('App\Models\Staff');
     }
 
->>>>>>> test1
 }

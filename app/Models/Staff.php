@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Staff extends Model
 {
     use HasFactory;
-<<<<<<< HEAD
-=======
 
 
     protected $guarded = [
@@ -22,5 +20,4 @@ class Staff extends Model
         return $this->belongsTo('App\Models\Field');
     }
 
->>>>>>> test1
 }
