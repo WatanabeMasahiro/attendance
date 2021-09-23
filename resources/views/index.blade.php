@@ -85,7 +85,7 @@
     @isset($contents)
             <tbody class="nondata_tbody">
         @foreach($contents as $content)
-                @if(session()->get('pagepass') != $user->pagepass)
+                @if(session()->get('pagepass') != decrypt($user->pagepass))
                 <tr class="table-secondary text-dark">
                     <td class="align-middle" style="font-size: 15px;">
                 @else
