@@ -35,14 +35,14 @@
         </div>
     </form>
 
-    <hr>
+    <hr/>
 
     <form id="formHome" class="my-5" action="{{url('/onsite_register')}}" method="GET">
         <div class="my-5">
             <table style="margin: 0 auto;">
                 <tr class="">
                     <td class="py-2 pr-2 pl-2">
-                        <input class="form-control d-inline border-primary text-center my-1 ml-1" type="search" name="str_search" value="{{$str_search}}"  style="width: 200px;" placeholder="Search"></td>
+                        <input class="form-control d-inline border-primary text-center my-1 ml-1" type="search" name="str_search" value="{{$str_search}}" style="width: 200px;" placeholder="Search"></td>
                     <td class="py-2">
                         <input value="検索" id="strSearch" class="strSearch btn btn-primary px-3" type="submit">
                     </td>
@@ -61,7 +61,7 @@
     @isset($fields)
             <tbody class="nondata_tbody">
             @foreach($fields as $field)
-                <tr class="recordData_field table-secondary text-dark">
+                <tr class="recordData_field table-secondary text-dark" style="cursor:pointer;">
                     <td class="pb-2 align-middle" style="font-size: 15px;"><div class="send_onsiteId d-none">{{encrypt($field->id)}}</div>{{$field->name}}</td>
                 </tr>
             @endforeach

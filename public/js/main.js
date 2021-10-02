@@ -8,20 +8,24 @@ $(function() {
   f_onsiteRegister_list();
   f_nondata_tbody();
   f_index_punchBtn();
-  f_index_pickeadate();
+  f_index_pickadate();
   f_attendance_punchBtn();
   f_deleteBtn_confirm();
   f_content_updateBtn();
   f_staff_registerUpdate_Btn();
   // f_staff_registerDeleteMsg();
   f_onsite_registerUpdate_Btn();
+  f_infochange_togglePagepass();
   f_infochangeBtn();
   f_withdrawalBtn_confirm();
   f_pagepassPage();
+  f_pagepassPage_togglePagepass();
   f_gray_th();
   f_flashingWarning();
   // f_paginate_anchor();
+  f_authLogin_togglePassword();
   f_auth_register();
+  f_authRegister_togglePassword();
 
 
   // function f_test() {
@@ -120,7 +124,7 @@ $(function() {
   }
 
 
-  function f_index_pickeadate() {
+  function f_index_pickadate() {
     $("#day1_search").pickadate({
       format: 'yyyy/mm/dd',
       weekdaysShort: ['土', '日', '月', '火', '水', '木', '金'],
@@ -271,6 +275,20 @@ $(function() {
   }
 
 
+  function f_infochange_togglePagepass() {
+    if (location.pathname == "/info_change") {
+      $('#btn-toggle-pagepass').on('click', function() {
+        $('.toggle-pagepass').toggleClass("fa-eye-slash").toggleClass("fa-eye");
+        if($('.toggle-pagepass').hasClass('fa-eye-slash') == true) {
+          $('input[name="pagepass"]').attr('type', 'password');
+        }
+        if($('.toggle-pagepass').hasClass('fa-eye') == true) {
+          $('input[name="pagepass"]').attr('type', 'text');
+        }
+      });
+    }
+  }
+
   function f_infochangeBtn() {
     $('.infochangeBtn').on('click', function() {
       if( $('input[name="name"]').val() == $('input[name="name"]').data('name') && $('input[name="email"]').val() == $('input[name="email"]').data('email') && $('input[name="pagepass"]').val() == $('input[name="pagepass"]').data('pagepass') && $('input[name="department_onsite"]:checked').val() == $('.depons_th').data('depons') ) {
@@ -360,6 +378,35 @@ $(function() {
     }
   };
 
+  function f_pagepassPage_togglePagepass() {
+    if (location.pathname == "/pagepass") {
+      $('#btn-toggle-pagepass').on('click', function() {
+        $('.toggle-pagepass').toggleClass("fa-eye-slash").toggleClass("fa-eye");
+        if($('.toggle-pagepass').hasClass('fa-eye-slash') == true) {
+          $('input[name="pagepass"]').attr('type', 'password');
+        }
+        if($('.toggle-pagepass').hasClass('fa-eye') == true) {
+          $('input[name="pagepass"]').attr('type', 'text');
+        }
+      });
+    }
+  }
+
+
+  function f_authLogin_togglePassword() {
+    if (location.pathname == "/login") {
+      $('#btn-toggle-password').on('click', function() {
+        $('.toggle-password').toggleClass("fa-eye-slash").toggleClass("fa-eye");
+        if($('.toggle-password').hasClass('fa-eye-slash') == true) {
+          $('input[name="password"]').attr('type', 'password');
+        }
+        if($('.toggle-password').hasClass('fa-eye') == true) {
+          $('input[name="password"]').attr('type', 'text');
+        }
+      });
+    }
+  }
+
 
   function f_auth_register() {
     $('.auth_regBtn').on('click', function() {
@@ -378,6 +425,40 @@ $(function() {
         }
       }
     });
+  }
+
+  function f_authRegister_togglePassword() {
+    if (location.pathname == "/register") {
+      $('#btn-toggle-pw').on('click', function() {
+        $('.toggle-pw').toggleClass("fa-eye-slash").toggleClass("fa-eye");
+        if($('.toggle-pw').hasClass('fa-eye-slash') == true) {
+          $('input[name="password"]').attr('type', 'password');
+        }
+        if($('.toggle-pw').hasClass('fa-eye') == true) {
+          $('input[name="password"]').attr('type', 'text');
+        }
+      });
+
+      $('#btn-toggle-pwConfirm').on('click', function() {
+        $('.toggle-pwConfirm').toggleClass("fa-eye-slash").toggleClass("fa-eye");
+        if($('.toggle-pwConfirm').hasClass('fa-eye-slash') == true) {
+          $('input[name="password_confirmation"]').attr('type', 'password');
+        }
+        if($('.toggle-pwConfirm').hasClass('fa-eye') == true) {
+          $('input[name="password_confirmation"]').attr('type', 'text');
+        }
+      });
+
+      $('#btn-toggle-pp').on('click', function() {
+        $('.toggle-pp').toggleClass("fa-eye-slash").toggleClass("fa-eye");
+        if($('.toggle-pp').hasClass('fa-eye-slash') == true) {
+          $('input[name="pagepass"]').attr('type', 'password');
+        }
+        if($('.toggle-pp').hasClass('fa-eye') == true) {
+          $('input[name="pagepass"]').attr('type', 'text');
+        }
+      });
+    }
   }
 
 

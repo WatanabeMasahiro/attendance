@@ -28,7 +28,18 @@
         @else
             <div class="pt-2 my-4" style="letter-spacing: 0.01em;">管理認証ボタンを押すと一定時間、<br/>管理者用画面に切り替わります。</div>
             <div class="mb-3">管理者用パス（ページパスワード）を入力し、<br/>管理認証ボタンを押してください。</div>
-            <input name="pagepass" type="password" class="form-control border-secondary text-center" style="width: 200px; margin: 0 auto;" required>
+            <table style="margin:0 auto;">
+                <tr>
+                    <td>
+                        <input name="pagepass" type="password" class="form-control border-secondary text-center ml-4 mr-1" style="width: 200px; margin: 0 auto;" required>
+                    </td>
+                    <td>
+                        <button id="btn-toggle-pagepass" class="btn btn-dark btn-sm" type="button">
+                            <i class="toggle-pagepass fas fa-eye-slash"></i>
+                        </button>
+                    </td>
+                </tr>
+            </table>
             <button name="pagepass_input" type="submit" value="true" class="btn btn-success mt-2 mb-3">管理認証</button>
             <div class="text-danger">※一般画面に戻す場合は、認証解除ボタンを押してください。<br/>（認証済の間、認証解除ボタンが表示されます。）</div>
         @endif

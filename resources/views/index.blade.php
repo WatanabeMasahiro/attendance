@@ -26,13 +26,16 @@
         <div class="flashingWarning old_delete text-danger h4 my-3">データを削除しました。</div>
     @endif
 
+    @isset($old_none_fieldObj_staffCount)
+        <div class="flashingWarning text-danger h4 my-3">※選択した{{$department_onsite}}には、スタッフが登録されていません。</div>
+    @endisset
 
     <hr/>
 
 
     <form action="/attendance" method="GET" class="border-right border-left">
         <div class="my-2">{{$department_onsite}}名を選択し、出退勤ボタンを押してください。</div>
-        <div class="my-2">
+        <div class="mt-3 mb-2">
             <select name="on_site" class="p-1">
                 <option class="opt_name" value="0" hidden>{{$department_onsite . "名"}}</option>
                 @foreach($fields as $field)
@@ -42,7 +45,7 @@
         </div>
 
         <div class="">
-            <input value="出退勤" class="index_punchBtn btn btn-danger" type="submit">
+            <input value="出退勤" class="index_punchBtn btn btn-danger btn-lg my-3 px-3" type="submit">
         </div>
     </form>
 
@@ -89,7 +92,7 @@
                 <tr class="table-secondary text-dark">
                     <td class="align-middle" style="font-size: 15px;">
                 @else
-                <tr class="recordData_content table-secondary text-dark">
+                <tr class="recordData_content table-secondary text-dark" style="cursor:pointer;">
                     <td class="align-middle" style="font-size: 15px;">
                         <div class="send_contentId d-none">{{encrypt($content->id)}}</div>
                 @endif
