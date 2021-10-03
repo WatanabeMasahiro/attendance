@@ -232,7 +232,7 @@ $(function() {
         event.preventDefault();
         alert('スタッフ名を入力してください。');
       }
-      if( $('input[name="name"]').val() == $('input[name="name"]').data('name') ) {
+      if( $('input[name="name"]').val() == $('input[name="name"]').data('name') && $('select[name="field_id"]').val() == $('#option_selected').val() ) {
         event.preventDefault();
         alert('データが変更されていません。');
       }
