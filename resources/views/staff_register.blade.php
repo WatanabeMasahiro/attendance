@@ -45,7 +45,7 @@
         <div class="my-1">
             <div class="my-1">スタッフ名を入力してください。</div>
             <input name="name" type="text" value="{{ old('name') }}" placeholder="スタッフ名" class="form-control border-secondary pl-2" style="width: 200px; margin: 0 auto;" required>
-            <button name="staff_registerBtn" value="true" type="submit" class="staff_registerBtn strSearch btn btn-primary my-3 px-3">登録</button>
+            <button name="staff_registerBtn" value="true" type="submit" class="staff_registerBtn strSearch btn btn-primary btn-lg my-3 px-3">登録</button>
         </div>
     </form>
 
@@ -73,7 +73,7 @@
     @isset($staff_s)
             <tbody class="nondata_tbody">
             @foreach($staff_s as $staff)
-                <tr class="recordData_staff table-secondary text-dark">
+                <tr class="recordData_staff table-secondary text-dark" style="cursor:pointer;">
                     <td class="pb-2 align-middle" style="font-size: 15px;">
                     <div class="send_staffId d-none">{{encrypt($staff->s_id)}}</div>
                         <div style="font-size: 16px">{{$staff->staff_name}}</div>  

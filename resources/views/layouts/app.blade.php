@@ -15,6 +15,13 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script src="{{ asset('js/lib/picker.js') }}" defer></script>
+    <script src="{{ asset('js/lib/picker.date.js') }}" defer></script>
+    <script src="{{ asset('js/lib/picker.time.js') }}" defer></script>
+    <script src="{{ asset('js/lib/legacy.js') }}" defer></script>
+    <script src="{{ asset('js/lib/translations/ja_JP.js') }}" defer></script>
+
     <script src="{{ asset('js/main.js') }}" defer></script>
     <!-- Fonts -->
     <link rel="shortcut icon" href="{{ asset('/site_logo.ico') }}">
@@ -23,6 +30,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
 
     <!-- Styles -->
+    <link rel="stylesheet" href="{{ asset('js/lib/themes/classic.css') }}" id="theme_base">
+    <link rel="stylesheet" href="{{ asset('js/lib/themes/classic.date.css') }}" id="theme_date">
+    <link rel="stylesheet" href="{{ asset('js/lib/themes/classic.time.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <body>

@@ -13,9 +13,9 @@
 <hr class="w-75 pb-0 mb-0">
 
 
-<div class="container mt-5">
+<div class="container-fluid mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-9">
             <div class="card">
                 <div class="card-header text-center"><b>{{ __('登録するユーザー情報を入力') }}</b></div>
 
@@ -52,7 +52,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right py-0">{{ __('パスワード') }}<br/><p class="mb-0" style="font-size:0.6em;">(※8文字以上)</p></label>
+                            <label for="password" class="col-md-4 col-form-label text-md-right py-0">{{ __('パスワード') }}<button id="btn-toggle-pw" class="btn btn-dark btn-sm ml-1 p-0" type="button"><i class="toggle-pw fas fa-eye-slash"></i></button><br/><p class="mb-0" style="font-size:0.6em;">(※8文字以上)</p></label>
 
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
@@ -67,7 +67,7 @@
 
                         <div class="form-group row">
 
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right" style="font-size: 0.94em;">{{ __('パスワード(確認)') }}</label>
+                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right" style="font-size: 0.94em;">{{ __('パスワード') }}<button id="btn-toggle-pwConfirm" class="btn btn-dark btn-sm ml-1 p-0" type="button"><i class="toggle-pwConfirm fas fa-eye-slash"></i></button><br/><p class="mb-0" style="font-size:0.6em;">(確認用)</p></label>
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
@@ -76,10 +76,10 @@
 
 
                         <div class="form-group row">
-                            <label for="pagepass" class="col-md-4 col-form-label text-md-right py-0" style="font-size:0.9em;">{{ __('勤怠管理者用パス') }}<br/><p class="mb-0" style="font-size:0.6em;">(ページパスワード)</p></label>
+                            <label for="pagepass" class="col-md-4 col-form-label text-md-right py-0" style="font-size:0.9em;">{{ __('勤怠管理者用パス') }}<button id="btn-toggle-pp" class="btn btn-dark btn-sm ml-1 p-0" type="button"><i class="toggle-pp fas fa-eye-slash"></i></button><br/><p class="mb-0" style="font-size:0.6em;">(ページパスワード)</p></label>
 
                             <div class="col-md-6">
-                                <input id="pagepass" type="password" class="form-control @error('pagepass') is-invalid @enderror" name="pagepass" required>
+                                <input id="pagepass" type="password" class="form-control @error('pagepass') is-invalid @enderror" name="pagepass" value="{{ old('pagepass') }}" required>
 
                                 @error('pagepass')
                                     <span class="invalid-feedback" role="alert">

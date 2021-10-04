@@ -43,7 +43,7 @@
                     <select name="field_id" class="field_id p-1" style="width: 200px;" required>
                       @foreach($fields as $field)
                         @if($staff->field_id == $field->id)
-                          <option value="{{encrypt($field->id)}}" selected>{{$field->name}}</option>
+                          <option id="option_selected" value="{{encrypt($field->id)}}" selected>{{$field->name}}</option>
                         @continue
                         @else
                           <option value="{{encrypt($field->id)}}">{{$field->name}}</option>

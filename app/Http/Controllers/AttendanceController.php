@@ -35,6 +35,7 @@ class AttendanceController extends Controller
         }
         $fields = $user->fields->all();
 
+        $old_none_fieldObj_staffCount = $request->old('none_fieldObj_staffCount');
         $old_punch = $request->old('punch');
         $pass_mismatch = $request->old('mis_match');
 
@@ -67,7 +68,7 @@ class AttendanceController extends Controller
         }
         $contents = $contents->orderBy('edited_at', 'desc')->paginate(5);
 
-        return view('index', compact('user', 'department_onsite', 'fields', 'old_punch', 'pass_mismatch', 'day1_search', 'day2_search', 'str_search', 'contents'));
+        return view('index', compact('user', 'department_onsite', 'fields', 'old_none_fieldObj_staffCount', 'old_punch', 'pass_mismatch', 'day1_search', 'day2_search', 'str_search', 'contents'));
     }
 
     // public function indexPost(Request $request) {
@@ -99,12 +100,17 @@ class AttendanceController extends Controller
         }
         $onsite = decrypt($request->on_site);
         $fieldObj = $user->fields->where('id', $onsite)->first();
-        if(!is_null($fieldObj)) {
+        $fieldObj_staffCount = Staff::where('field_id', $onsite)->count();
+        if($fieldObj_staffCount == 0) {
+            $none_fieldObj_staffCount = array('none_fieldObj_staffCount' => true);
+            $request->merge($none_fieldObj_staffCount);
+            return redirect('/')->withInput();
+        }else if(!is_null($fieldObj)) {
             $fieldName = $fieldObj->name;
             $staffNames = $fieldObj->staff_s;
-        } else {
-            $fieldName = false;
-            $staffNames = false;
+        // } else {
+        //     $fieldName = false;
+        //     $staffNames = false;
         }
         $punch = null;
             return view('attendance', compact('user', 'department_onsite', 'onsite', 'fieldName', 'staffNames', 'punch'));
